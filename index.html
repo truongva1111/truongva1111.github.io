@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Võ Anh Trưởng — iOS Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f5f5f7;
+      --bg-card: #ffffff;
+      --bg-nav: rgba(245,245,247,0.85);
+      --text: #1d1d1f;
+      --text-2: #424245;
+      --text-3: #6e6e73;
+      --accent: #0071e3;
+      --accent-hover: #0077ed;
+      --border: rgba(0,0,0,0.08);
+      --shadow: 0 2px 20px rgba(0,0,0,0.06);
+      --shadow-hover: 0 8px 40px rgba(0,0,0,0.12);
+      --tag-bg: rgba(0,113,227,0.08);
+      --tag-text: #0071e3;
+      --timeline-line: rgba(0,0,0,0.1);
+    }
+    [data-theme="dark"] {
+      --bg: #000000;
+      --bg-card: #1c1c1e;
+      --bg-nav: rgba(0,0,0,0.85);
+      --text: #f5f5f7;
+      --text-2: #c7c7cc;
+      --text-3: #8e8e93;
+      --accent: #2997ff;
+      --accent-hover: #42a5ff;
+      --border: rgba(255,255,255,0.1);
+      --shadow: 0 2px 20px rgba(0,0,0,0.4);
+      --shadow-hover: 0 8px 40px rgba(0,0,0,0.6);
+      --tag-bg: rgba(41,151,255,0.12);
+      --tag-text: #2997ff;
+      --timeline-line: rgba(255,255,255,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s ease, color 0.3s ease;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--bg-nav);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background 0.3s ease;
+    }
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 18px; font-weight: 400;
+      color: var(--text); text-decoration: none;
+      letter-spacing: -0.3px;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 13px; font-weight: 400;
+      color: var(--text-2); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    .theme-btn {
+      background: none; border: none; cursor: pointer;
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      color: var(--text-2);
+      transition: background 0.2s, color 0.2s;
+    }
+    .theme-btn:hover { background: var(--border); color: var(--text); }
+    .theme-btn svg { width: 17px; height: 17px; }
+    .icon-sun { display: none; }
+    [data-theme="dark"] .icon-moon { display: none; }
+    [data-theme="dark"] .icon-sun { display: block; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+    }
+    .hero-avatar {
+      width: 96px; height: 96px; border-radius: 50%;
+      background: linear-gradient(135deg, #0071e3 0%, #34c759 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Serif Display', serif;
+      font-size: 38px; color: #fff;
+      margin: 0 auto 32px;
+      box-shadow: 0 8px 32px rgba(0,113,227,0.3);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      font-size: 12px; font-weight: 500;
+      padding: 5px 12px; border-radius: 999px;
+      margin-bottom: 20px;
+      letter-spacing: 0.2px;
+    }
+    .hero-badge::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 400; line-height: 1.08;
+      letter-spacing: -1.5px;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-3);
+      font-weight: 300;
+      max-width: 520px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+    .hero-cta {
+      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+    }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+      padding: 12px 24px; border-radius: 980px;
+      font-size: 15px; font-weight: 400;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--accent-hover); transform: scale(1.02); }
+    .btn-ghost {
+      background: transparent; color: var(--accent);
+      padding: 11px 24px; border-radius: 980px;
+      font-size: 15px; font-weight: 400;
+      text-decoration: none; border: 1px solid var(--border);
+      transition: border-color 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+    .btn-ghost:hover { border-color: var(--accent); transform: scale(1.02); }
+    .hero-scroll {
+      position: absolute; bottom: 40px;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      color: var(--text-3); font-size: 11px; letter-spacing: 1px;
+      text-transform: uppercase; animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+    .hero-scroll svg { width: 16px; height: 16px; }
+
+    /* ── SECTION BASE ── */
+    section { padding: 96px 24px; }
+    .section-inner { max-width: 900px; margin: 0 auto; }
+    .section-label {
+      font-size: 12px; font-weight: 500; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 400; line-height: 1.12;
+      letter-spacing: -0.8px; color: var(--text);
+      margin-bottom: 48px;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--bg); }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 48px; align-items: start;
+    }
+    .about-text p {
+      font-size: 17px; color: var(--text-2);
+      line-height: 1.75; margin-bottom: 16px;
+      font-weight: 300;
+    }
+    .about-text p strong { color: var(--text); font-weight: 500; }
+    .about-stats {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .stat-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+    .stat-number {
+      font-family: 'DM Serif Display', serif;
+      font-size: 36px; color: var(--accent);
+      line-height: 1; margin-bottom: 6px;
+    }
+    .stat-label { font-size: 13px; color: var(--text-3); font-weight: 400; }
+
+    /* ── SKILLS ── */
+    #skills { background: var(--bg-card); }
+    .skills-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .skill-group {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px;
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .skill-group:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+    .skill-group-title {
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 1px; text-transform: uppercase;
+      color: var(--text-3); margin-bottom: 14px;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      background: var(--tag-bg); color: var(--tag-text);
+      font-size: 12px; font-weight: 400;
+      padding: 4px 10px; border-radius: 999px;
+    }
+    .tag.neutral {
+      background: var(--border); color: var(--text-2);
+    }
+
+    /* ── EXPERIENCE ── */
+    #experience { background: var(--bg); }
+    .timeline { position: relative; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 0; top: 8px; bottom: 0; width: 1px;
+      background: var(--timeline-line);
+    }
+    .timeline-item {
+      position: relative; padding-left: 28px; margin-bottom: 48px;
+    }
+    .timeline-item:last-child { margin-bottom: 0; }
+    .timeline-dot {
+      position: absolute; left: -4px; top: 6px;
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+    }
+    .exp-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 28px;
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .exp-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+    .exp-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; flex-wrap: wrap; gap: 8px; }
+    .exp-role { font-size: 17px; font-weight: 500; color: var(--text); }
+    .exp-period {
+      font-size: 12px; color: var(--text-3);
+      background: var(--border); padding: 3px 10px; border-radius: 999px;
+      white-space: nowrap;
+    }
+    .exp-company { font-size: 14px; color: var(--accent); font-weight: 400; margin-bottom: 16px; }
+    .exp-body { font-size: 14px; color: var(--text-2); line-height: 1.7; }
+    .exp-body ul { padding-left: 16px; margin-top: 10px; }
+    .exp-body li { margin-bottom: 6px; }
+    .exp-body strong { color: var(--text); font-weight: 500; }
+
+    /* ── PROJECTS ── */
+    #projects { background: var(--bg-card); }
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .project-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px;
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.3s, transform 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+    }
+    .project-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+    .project-name { font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+    .project-period { font-size: 12px; color: var(--text-3); margin-bottom: 12px; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    /* ── NOTES / BLOG ── */
+    #notes { background: var(--bg); }
+    .notes-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .note-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 28px;
+      box-shadow: var(--shadow);
+      text-decoration: none;
+      display: block;
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .note-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+    .note-chip {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.8px;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .note-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px; color: var(--text);
+      line-height: 1.3; margin-bottom: 10px;
+    }
+    .note-desc { font-size: 14px; color: var(--text-3); line-height: 1.65; }
+    .note-arrow {
+      margin-top: 20px; color: var(--accent);
+      font-size: 13px; display: flex; align-items: center; gap: 4px;
+    }
+
+    /* ── EDUCATION ── */
+    #education { background: var(--bg-card); }
+    .edu-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 28px;
+      display: flex; gap: 20px; align-items: flex-start;
+      box-shadow: var(--shadow);
+    }
+    .edu-icon {
+      width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
+      background: linear-gradient(135deg, #0071e3, #5ac8fa);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 20px;
+    }
+    .edu-school { font-size: 17px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+    .edu-degree { font-size: 14px; color: var(--text-2); margin-bottom: 4px; }
+    .edu-year { font-size: 13px; color: var(--text-3); }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--bg); text-align: center; }
+    #contact .section-inner { max-width: 600px; }
+    .contact-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 400; line-height: 1.1;
+      letter-spacing: -1px; color: var(--text);
+      margin-bottom: 16px;
+    }
+    .contact-sub { font-size: 17px; color: var(--text-3); font-weight: 300; margin-bottom: 40px; }
+    .contact-links { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .contact-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 20px; border-radius: 980px;
+      font-size: 14px; font-weight: 400;
+      text-decoration: none; border: 1px solid var(--border);
+      color: var(--text-2);
+      transition: border-color 0.2s, color 0.2s, transform 0.15s, background 0.2s;
+    }
+    .contact-link:hover {
+      border-color: var(--accent); color: var(--accent);
+      transform: scale(1.02);
+    }
+    .contact-link svg { width: 15px; height: 15px; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 32px 24px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 12px; color: var(--text-3);
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .notes-grid { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .skills-grid { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">V.A.T</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#notes">Notes</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+    <!-- Moon -->
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+    <!-- Sun -->
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/>
+      <line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/>
+      <line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="position:relative;">
+  <div class="hero-avatar">V</div>
+  <div class="hero-badge">Available for opportunities</div>
+  <h1>Võ Anh <em>Trưởng</em></h1>
+  <p class="hero-sub">Senior iOS Engineer · Fintech Expert · Audio Processing R&D<br>Building mobile banking ecosystems across Vietnam & Southeast Asia.</p>
+  <div class="hero-cta">
+    <a href="#experience" class="btn-primary">View Experience</a>
+    <a href="#contact" class="btn-ghost">Get in Touch</a>
+  </div>
+  <div class="hero-scroll">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <p class="section-label">About</p>
+    <h2 class="section-title">Crafting mobile experiences<br>that millions rely on.</h2>
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <p>I'm a <strong>Senior iOS Engineer</strong> with 4+ years of experience specializing in <strong>Fintech mobile development</strong>. I build and maintain mobile banking ecosystems for some of Vietnam's most trusted financial institutions.</p>
+        <p>My work spans Retail Banking, Corporate/SME Banking, and Digital Neobanks — from high-scale core modules to rapid-delivery neobank features and R&D audio processing systems.</p>
+        <p>I believe great software lives at the intersection of <strong>technical precision</strong> and <strong>thoughtful UX</strong> — and I bring both to every product I touch.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-card">
+          <div class="stat-number">4+</div>
+          <div class="stat-label">Years of experience</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">8+</div>
+          <div class="stat-label">Banking apps delivered</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">2M+</div>
+          <div class="stat-label">Active users served</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">3</div>
+          <div class="stat-label">Countries · VN, KH, ...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-inner">
+    <p class="section-label">Technical Skills</p>
+    <h2 class="section-title">Languages, tools &amp; platforms.</h2>
+    <div class="skills-grid reveal">
+      <div class="skill-group">
+        <p class="skill-group-title">Languages</p>
+        <div class="skill-tags">
+          <span class="tag">Swift</span>
+          <span class="tag">Objective-C</span>
+          <span class="tag">Dart</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">Frameworks &amp; Platforms</p>
+        <div class="skill-tags">
+          <span class="tag">Native iOS</span>
+          <span class="tag">Flutter</span>
+          <span class="tag">UIKit</span>
+          <span class="tag">SwiftUI</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">Dev Tools</p>
+        <div class="skill-tags">
+          <span class="tag">Xcode</span>
+          <span class="tag">Android Studio</span>
+          <span class="tag">Git</span>
+          <span class="tag">SourceTree</span>
+          <span class="tag">JIRA</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">Design Tools</p>
+        <div class="skill-tags">
+          <span class="tag neutral">Figma</span>
+          <span class="tag neutral">Sketch</span>
+          <span class="tag neutral">Adobe XD</span>
+          <span class="tag neutral">Postman</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">Architecture &amp; Patterns</p>
+        <div class="skill-tags">
+          <span class="tag neutral">OOP</span>
+          <span class="tag neutral">MVC</span>
+          <span class="tag neutral">MVVM</span>
+          <span class="tag neutral">Design Patterns</span>
+          <span class="tag neutral">Data Structures</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">Specialties</p>
+        <div class="skill-tags">
+          <span class="tag">Fintech / Banking</span>
+          <span class="tag">Audio Processing</span>
+          <span class="tag">NLP</span>
+          <span class="tag">e-KYC</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <p class="section-label">Experience</p>
+    <h2 class="section-title">Where I've worked.</h2>
+    <div class="timeline reveal">
+
+      <!-- VNPAY -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="exp-card">
+          <div class="exp-header">
+            <span class="exp-role">Senior iOS Engineer</span>
+            <span class="exp-period">Aug 2023 — Present</span>
+          </div>
+          <div class="exp-company">VNPAY · Ho Chi Minh City · On-site</div>
+          <div class="exp-body">
+            <p>Spearheaded end-to-end development, maintenance, and delivery of mobile banking ecosystems for <strong>8+ financial institutions</strong> across Retail, Corporate/SME, and Digital Neobank segments.</p>
+            <ul>
+              <li><strong>Enterprise & Retail Banking</strong> — Core modules (Transfers, Savings, Bill Pay) for Big 4 Bank, HDBank, SAIGONBANK, VietABank serving millions of active users with strict security compliance.</li>
+              <li><strong>Corporate & SME Banking</strong> — B2B-specific Maker/Checker approval flows, Bulk Transfers, and Payroll services for Vietbank SME.</li>
+              <li><strong>Digital Neobanks</strong> — Fast-track e-KYC, Virtual Cards, and Credit Scoring integration for Vikki Bank and TIN Card within 1–2 month timelines.</li>
+              <li><strong>R&D · Vietnamese Currency TTS Engine</strong> — Researched and deployed a custom audio concatenation algorithm converting currency values into natural Vietnamese speech, enhancing accessibility and automating transaction notifications.</li>
+              <li><strong>Regional Market</strong> — Localized multi-currency solutions for Sacombank Cambodia.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- FPT Software -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="exp-card">
+          <div class="exp-header">
+            <span class="exp-role">iOS Developer</span>
+            <span class="exp-period">Mar 2021 — Aug 2023</span>
+          </div>
+          <div class="exp-company">FPT Software · Full-time</div>
+          <div class="exp-body">
+            <p>Developed and maintained iOS applications as part of cross-functional teams, focusing on performance, code quality, and seamless user experiences.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-inner">
+    <p class="section-label">Projects</p>
+    <h2 class="section-title">Products I've shipped.</h2>
+    <div class="projects-grid reveal">
+      <div class="project-card">
+        <div class="project-name">SAIGONBANK</div>
+        <div class="project-period">Oct 2025 — Present · VNPAY</div>
+        <div class="project-tags">
+          <span class="tag">iOS Development</span>
+          <span class="tag">Finance</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-name">Vietbank Digital Plus</div>
+        <div class="project-period">May 2025 — Present · VNPAY</div>
+        <div class="project-tags">
+          <span class="tag">iOS Development</span>
+          <span class="tag">Finance</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-name">Vietbank Digital</div>
+        <div class="project-period">Aug 2023 — Present · VNPAY</div>
+        <div class="project-tags">
+          <span class="tag">iOS Development</span>
+          <span class="tag">Objective-C</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-name">VietABank</div>
+        <div class="project-period">Apr 2025 — Jul 2025 · VNPAY</div>
+        <div class="project-tags">
+          <span class="tag">iOS Development</span>
+          <span class="tag">Finance</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-name">BIDV</div>
+        <div class="project-period">Feb 2025 — Apr 2025 · VNPAY</div>
+        <div class="project-tags">
+          <span class="tag">iOS Development</span>
+          <span class="tag">Finance</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-name">Sacombank (Cambodia)</div>
+        <div class="project-period">Aug 2024 — Oct 2024 · VNPAY</div>
+        <div class="project-tags">
+          <span class="tag">iOS Development</span>
+          <span class="tag">Objective-C</span>
+          <span class="tag neutral">Multi-currency</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-name">Vikki Bank</div>
+        <div class="project-period">Aug 2024 — Oct 2024 · VNPAY</div>
+        <div class="project-tags">
+          <span class="tag">iOS Development</span>
+          <span class="tag neutral">Neobank</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-name">TIN Card (VietCredit)</div>
+        <div class="project-period">Sep 2023 — Aug 2024 · VNPAY</div>
+        <div class="project-tags">
+          <span class="tag">iOS Development</span>
+          <span class="tag neutral">Virtual Card</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOTES / BLOG -->
+<section id="notes">
+  <div class="section-inner">
+    <p class="section-label">Notes &amp; Writing</p>
+    <h2 class="section-title">Things I've documented.</h2>
+    <div class="notes-grid reveal">
+      <a class="note-card" href="lo-trinh-ky-su-vi-mach.md">
+        <p class="note-chip">Embedded Systems · IC Design</p>
+        <h3 class="note-title">Lộ trình tự học: Từ Lập trình Nhúng đến Kỹ sư Thiết kế Vi mạch</h3>
+        <p class="note-desc">7 giai đoạn từ Bare-metal, ARM Cortex-M, Linux nhúng đến Verilog, FPGA và UVM Verification. Kèm từ khóa, sách, công cụ và bản đồ nghề nghiệp.</p>
+        <div class="note-arrow">Read note <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </a>
+      <div class="note-card" style="opacity:0.5; cursor:default;">
+        <p class="note-chip">Coming soon</p>
+        <h3 class="note-title">More notes on the way...</h3>
+        <p class="note-desc">iOS architecture patterns, Fintech security best practices, and audio processing deep-dives.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-inner">
+    <p class="section-label">Education</p>
+    <h2 class="section-title">Academic background.</h2>
+    <div class="reveal">
+      <div class="edu-card">
+        <div class="edu-icon">🎓</div>
+        <div>
+          <div class="edu-school">University of Transport and Communication</div>
+          <div class="edu-degree">Bachelor's Degree · Information Technology</div>
+          <div class="edu-year">Aug 2017 — Nov 2021 · Hà Nội, Việt Nam</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <h2 class="contact-title">Let's build something<br><em style="font-style:italic; color:var(--accent);">great</em> together.</h2>
+    <p class="contact-sub">Open to interesting projects, collaborations,<br>and new opportunities in Fintech &amp; iOS.</p>
+    <div class="contact-links">
+      <a href="https://github.com/truongva1111" class="contact-link" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.37.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a href="https://www.linkedin.com/in/v%C3%B5-anh-tr%C6%B0%E1%BB%9Fng-85a2a5201/" class="contact-link" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.8 0 0 .77 0 1.72v20.56C0 23.23.8 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.23 0 22.23 0z"/></svg>
+        LinkedIn
+      </a>
+      <a href="mailto:voanhtruong@email.com" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Email
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Võ Anh Trưởng · Built with care · Hosted on GitHub Pages</p>
+</footer>
+
+<script>
+  // Theme toggle
+  const html = document.documentElement;
+  const btn = document.getElementById('themeToggle');
+  const saved = localStorage.getItem('theme') || 'light';
+  html.setAttribute('data-theme', saved);
+  btn.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // Active nav highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 80) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current
+        ? 'var(--accent)' : '';
+    });
+  }, { passive: true });
+</script>
+</body>
+</html>
