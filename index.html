@@ -53,7 +53,8 @@
     }
 
     html {
-      scroll-behavior: smooth
+      scroll-behavior: smooth;
+      overflow-x: hidden
     }
 
     body {
@@ -61,7 +62,8 @@
       background: var(--bg);
       color: var(--text);
       -webkit-font-smoothing: antialiased;
-      transition: background .3s, color .3s
+      transition: background .3s, color .3s;
+      overflow-x: hidden
     }
 
     /* NAV */
@@ -275,7 +277,51 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding-top: var(--nav-h)
+      padding-top: var(--nav-h);
+      position: relative
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      text-decoration: none;
+      color: var(--accent);
+      opacity: .75;
+      animation: scrollBounce 1.8s ease-in-out infinite;
+      transition: opacity .35s;
+      cursor: pointer;
+      filter: drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 40%, transparent))
+    }
+
+    .scroll-hint:hover {
+      opacity: 1
+    }
+
+    .scroll-hint.hidden {
+      opacity: 0;
+      pointer-events: none
+    }
+
+    .scroll-hint svg {
+      width: 28px;
+      height: 28px;
+      display: block
+    }
+
+    .scroll-hint svg:last-child {
+      margin-top: -12px;
+      opacity: .45
+    }
+
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0) }
+      50% { transform: translateX(-50%) translateY(12px) }
     }
 
     .hero-badge {
@@ -1122,6 +1168,95 @@
       flex-shrink: 0
     }
 
+    /* TOOL LOGOS */
+    .tool-logos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center
+    }
+
+    .tool-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      position: relative;
+      transition: background .15s, transform .15s, box-shadow .15s
+    }
+
+    .tool-logo:hover {
+      background: var(--tag-bg);
+      transform: translateY(-2px);
+      box-shadow: var(--sh-sm)
+    }
+
+    .tool-logo img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain
+    }
+
+    [data-theme="dark"] .tool-logo img {
+      /* keep brand colors in dark mode — no filter */
+    }
+
+    .tag-logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 24px;
+      border-radius: 999px;
+      background: var(--tag-bg);
+      text-decoration: none;
+      flex-shrink: 0;
+      position: relative;
+      transition: background .15s, transform .12s
+    }
+
+    .tag-logo:hover {
+      transform: scale(1.1)
+    }
+
+    .tag-logo img {
+      width: 13px;
+      height: 13px;
+      object-fit: contain
+    }
+
+    /* INSTANT TOOLTIP */
+    .tool-logo::after,
+    .tag-logo::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text);
+      color: var(--bg);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .2px;
+      padding: 3px 8px;
+      border-radius: 5px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 10;
+      transition: opacity .08s
+    }
+
+    .tool-logo:hover::after,
+    .tag-logo:hover::after {
+      opacity: 1
+    }
+
     /* RESPONSIVE */
     @media(max-width:768px) {
       section {
@@ -1239,11 +1374,20 @@
       <div class="hero-badge"><span></span>Open to opportunities</div>
       <h1 class="hero-h1">Võ Anh<br><span class="ac">Trưởng.</span></h1>
       <p class="hero-sub">Senior iOS Engineer · Fintech Solutions · Audio Processing R&amp;D<br>
-        Building mobile banking ecosystems for 8+ financial institutions across Vietnam &amp; Southeast Asia.</p>
+        Building mobile banking ecosystems for <span id="heroApps">8+</span> financial institutions across Vietnam &amp;
+        Southeast Asia.</p>
       <div class="hero-cta">
         <a href="#experience" class="btn-p">View Experience</a>
         <a href="#contact" class="btn-g">Contact</a>
       </div>
+      <a href="#about" class="scroll-hint" id="scrollHint" aria-label="Scroll down">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </a>
     </section>
 
     <!-- ABOUT -->
@@ -1252,9 +1396,11 @@
       <h2 class="s-title">Crafting mobile experiences<br>that millions rely on.</h2>
       <div class="about-grid reveal">
         <div class="about-text">
-          <p>I'm a <strong>Senior iOS Engineer</strong> with 4+ years of deep expertise in <strong>Fintech
+          <p>I'm a <strong>Senior iOS Engineer</strong> with <span id="aboutYoe">4+</span> years of deep expertise in
+            <strong>Fintech
               mobile</strong>. I spearhead the end-to-end development, maintenance, and delivery of mobile banking
-            ecosystems for the most reputable financial institutions in Vietnam.</p>
+            ecosystems for the most reputable financial institutions in Vietnam.
+          </p>
           <p>From Retail Banking, Corporate/SME Banking to Digital Neobanks — I handle everything from core banking
             modules serving millions of active users to rapid neobank integrations within 1–2 months.</p>
           <p>I believe great software lives at the intersection of <strong>precision engineering</strong> and
@@ -1263,11 +1409,11 @@
         </div>
         <div class="stats-grid">
           <div class="stat-card">
-            <div class="stat-n">4+</div>
+            <div class="stat-n" id="statYoe">4+</div>
             <div class="stat-l">Years of Experience</div>
           </div>
           <div class="stat-card">
-            <div class="stat-n">8+</div>
+            <div class="stat-n" id="statApps">8+</div>
             <div class="stat-l">Banking Apps</div>
           </div>
         </div>
@@ -1285,23 +1431,60 @@
         <div class="skills-grid reveal">
           <div class="sg">
             <p class="sg-t">Languages</p>
-            <div class="tags"><span class="tag">Swift</span><span class="tag">Objective-C</span><span
-                class="tag">Dart</span></div>
+            <div class="tags">
+              <a class="tag-logo" href="https://swift.org" target="_blank" rel="noopener" data-tip="Swift">
+                <img src="https://cdn.simpleicons.org/swift" alt="Swift" />
+              </a>
+              <span class="tag">Objective-C</span>
+              <a class="tag-logo" href="https://dart.dev" target="_blank" rel="noopener" data-tip="Dart">
+                <img src="https://cdn.simpleicons.org/dart" alt="Dart" />
+              </a>
+            </div>
           </div>
           <div class="sg">
             <p class="sg-t">Frameworks</p>
-            <div class="tags"><span class="tag">Native iOS</span><span class="tag">UIKit</span><span
-                class="tag">SwiftUI</span><span class="tag">Flutter</span></div>
+            <div class="tags">
+              <span class="tag">Native iOS</span>
+              <span class="tag">UIKit</span>
+              <span class="tag">SwiftUI</span>
+              <a class="tag-logo" href="https://flutter.dev" target="_blank" rel="noopener" data-tip="Flutter">
+                <img src="https://cdn.simpleicons.org/flutter" alt="Flutter" />
+              </a>
+            </div>
           </div>
           <div class="sg">
             <p class="sg-t">Dev Tools</p>
-            <div class="tags"><span class="tag n">Xcode</span><span class="tag n">Android Studio</span><span
-                class="tag n">Git</span><span class="tag n">SourceTree</span><span class="tag n">JIRA</span></div>
+            <div class="tool-logos">
+              <a class="tool-logo" href="https://developer.apple.com/xcode/" target="_blank" rel="noopener" data-tip="Xcode">
+                <img src="https://cdn.simpleicons.org/xcode" alt="Xcode" />
+              </a>
+              <a class="tool-logo" href="https://developer.android.com/studio" target="_blank" rel="noopener" data-tip="Android Studio">
+                <img src="https://cdn.simpleicons.org/androidstudio" alt="Android Studio" />
+              </a>
+              <a class="tool-logo" href="https://git-scm.com/" target="_blank" rel="noopener" data-tip="Git">
+                <img src="https://cdn.simpleicons.org/git" alt="Git" />
+              </a>
+              <a class="tool-logo" href="https://www.sourcetreeapp.com/" target="_blank" rel="noopener" data-tip="SourceTree">
+                <img src="https://cdn.simpleicons.org/sourcetree" alt="SourceTree" />
+              </a>
+              <a class="tool-logo" href="https://www.atlassian.com/software/jira" target="_blank" rel="noopener" data-tip="JIRA">
+                <img src="https://cdn.simpleicons.org/jira" alt="JIRA" />
+              </a>
+              <a class="tool-logo" href="https://www.atlassian.com/software/confluence" target="_blank" rel="noopener" data-tip="Confluence">
+                <img src="https://cdn.simpleicons.org/confluence" alt="Confluence" />
+              </a>
+            </div>
           </div>
           <div class="sg">
             <p class="sg-t">Design Tools</p>
-            <div class="tags"><span class="tag n">Figma</span><span class="tag n">Sketch</span><span class="tag n">Adobe
-                XD</span><span class="tag n">Postman</span></div>
+            <div class="tool-logos">
+              <a class="tool-logo" href="https://www.figma.com" target="_blank" rel="noopener" data-tip="Figma">
+                <img src="https://cdn.simpleicons.org/figma" alt="Figma" />
+              </a>
+              <a class="tool-logo" href="https://www.sketch.com" target="_blank" rel="noopener" data-tip="Sketch">
+                <img src="https://cdn.simpleicons.org/sketch" alt="Sketch" />
+              </a>
+            </div>
           </div>
           <div class="sg">
             <p class="sg-t">Architecture</p>
@@ -1334,18 +1517,20 @@
             <div class="exp-co">VNPAY · Ho Chi Minh City · On-site</div>
             <div class="exp-body">
               <p>Spearheaded the end-to-end development, maintenance, and delivery of mobile banking ecosystems for
-                <strong>8+ financial institutions</strong>. My portfolio spans across Retail Banking, Corporate/SME
+                <strong><span id="expApps">8+</span> financial institutions</strong>. My portfolio spans across Retail
+                Banking, Corporate/SME
                 Banking, and Digital Neobanks.
               </p>
               <ul>
-                <li><strong>Enterprise &amp; Retail Banking</strong> (Big 4 Bank, HDBank, SAIGONBANK, VIETABANK) —
+                <li><strong>Enterprise &amp; Retail Banking</strong> (Big 4 Bank, HDBank, VIETABANK, Vietbank) —
                   Implemented and maintained core banking modules (Transfers, Savings, Bill Pay) serving millions of
                   active users with strict security compliance. Continuously refactored legacy codebases to improve app
                   performance and stability.</li>
-                <li><strong>Corporate &amp; SME Banking</strong> (Vietbank SME) — Implemented B2B-specific features
+                <li><strong>Corporate &amp; SME Banking</strong> (SAIGONBANK iBanking) —
+                  Implemented B2B-specific features
                   including Maker/Checker approval flows, Bulk Transfers, and Payroll services. Enhanced authentication
                   layers for high-value corporate transactions.</li>
-                <li><strong>Digital Banking &amp; Neobanks</strong> (Vikki Bank, TIN Card – VietCredit) — Fast-track
+                <li><strong>Digital Banking &amp; Neobanks</strong> (Vikki DAB, TIN Card (VietCredit)) — Fast-track
                   integration of e-KYC, Virtual Cards, and Credit Scoring within aggressive 1–2 month timelines. Built
                   dynamic, mobile-first interfaces focusing on user acquisition and engagement.</li>
                 <li><strong>R&amp;D · Vietnamese Currency TTS Engine</strong> — Researched and deployed a custom audio
@@ -1384,25 +1569,37 @@
           <!-- ACTIVE (most recent start first) -->
           <div class="proj-card active">
             <div class="active-badge"><span></span>Active</div>
-            <div class="proj-name">SAIGONBANK iBanking</div>
+            <div class="proj-card-head">
+              <div class="proj-name">SAIGONBANK iBanking</div>
+              <a class="proj-store" href="https://apps.apple.com/vn/app/saigonbank-ibanking/id6754838910"
+                target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.16 1.26-2.14 3.76.03 2.99 2.63 3.99 2.66 4l-.07.26zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                </svg>
+                App Store
+              </a>
+            </div>
             <div class="proj-period">Oct 2025 — Present · VNPAY</div>
             <div class="proj-desc">Building SAIGONBANK SME Banking: Maker/Checker approval flows, transaction management
               (pending/processed/detail/copy/filter), regulatory compliance (Early Prevention, Circular No. 77¹, T+1).
             </div>
             <div class="tags"><span class="tag">iOS</span><span class="tag">Finance</span><span
                 class="tag n">Swift</span><span class="tag n">SME Banking</span></div>
-            <a class="proj-store" href="https://apps.apple.com/vn/app/saigonbank-ibanking/id6754838910" target="_blank"
-              rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.16 1.26-2.14 3.76.03 2.99 2.63 3.99 2.66 4l-.07.26zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-              </svg>
-              App Store
-            </a>
           </div>
           <div class="proj-card active">
             <div class="active-badge"><span></span>Active</div>
-            <div class="proj-name">Vietbank Digital Plus</div>
+            <div class="proj-card-head">
+              <div class="proj-name">Vietbank Digital Plus</div>
+              <a class="proj-store" href="https://apps.apple.com/vn/app/vietbank-digital-plus/id6746633957"
+                target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.16 1.26-2.14 3.76.03 2.99 2.63 3.99 2.66 4l-.07.26zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                </svg>
+                App Store
+              </a>
+            </div>
             <div class="proj-period">May 2025 — Present · VNPAY</div>
             <div class="proj-desc">Leading development of Vietbank Omni — a ground-up rebuild. Core modules: biometric
               auth, Soft OTP, Facepay Plus, account management, domestic/international/batch transfers, QR payment,
@@ -1410,34 +1607,27 @@
               Vietlott, Voice OTT). Compliance: Decree No. 13¹, Circular No. 50¹, VNGUARD.</div>
             <div class="tags"><span class="tag">iOS</span><span class="tag">Finance</span><span
                 class="tag n">Swift</span><span class="tag n">e-KYC</span><span class="tag n">Soft OTP</span></div>
-            <a class="proj-store" href="https://apps.apple.com/vn/app/vietbank-digital-plus/id6746633957"
-              target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.16 1.26-2.14 3.76.03 2.99 2.63 3.99 2.66 4l-.07.26zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-              </svg>
-              App Store
-            </a>
           </div>
           <div class="proj-card active">
             <div class="active-badge"><span></span>Active</div>
-            <div class="proj-name">Vietbank Digital</div>
+            <div class="proj-card-head">
+              <div class="proj-name">Vietbank Digital</div>
+              <a class="proj-store" href="https://apps.apple.com/vn/app/vietbank-digital/id1469883896" target="_blank"
+                rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.16 1.26-2.14 3.76.03 2.99 2.63 3.99 2.66 4l-.07.26zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                </svg>
+                App Store
+              </a>
+            </div>
             <div class="proj-period">Aug 2023 — Present · VNPAY</div>
             <div class="proj-desc">Maintained and enhanced Vietbank Digital: SDK integrations (bus/hotel/train),
               lucky-wheel campaigns, security hardening, e-KYC upgrades (Oval, NFC C06, biometric collection, Facepay
               for Decision No. 2345¹), card payment, OTT registration flow, webchat, email settings, and QA across
-              versions
-              3.3.2–3.4.1.</div>
+              versions 3.3.2–3.4.1.</div>
             <div class="tags"><span class="tag">iOS</span><span class="tag">Objective-C</span><span
                 class="tag n">e-KYC</span><span class="tag n">Soft OTP</span></div>
-            <a class="proj-store" href="https://apps.apple.com/vn/app/vietbank-digital/id1469883896" target="_blank"
-              rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.16 1.26-2.14 3.76.03 2.99 2.63 3.99 2.66 4l-.07.26zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-              </svg>
-              App Store
-            </a>
           </div>
           <!-- COMPLETED (most recent start first, A-Z tiebreak) -->
           <div class="proj-card">
@@ -1731,6 +1921,23 @@
   </div>
 
   <script>
+    /* Dynamic stats */
+    (function () {
+      // Years of experience — start: March 2021
+      const start = new Date(2021, 2, 1); // month is 0-indexed
+      const yoe = Math.floor((Date.now() - start) / (365.25 * 24 * 60 * 60 * 1e3));
+      document.getElementById('statYoe').textContent = yoe + '+';
+      document.getElementById('aboutYoe').textContent = yoe + '+';
+      // Banking apps — count non-R&D VNPAY project cards (first proj-grid)
+      const vnpayGrid = document.querySelector('.proj-grid');
+      const appCount = vnpayGrid
+        ? vnpayGrid.querySelectorAll('.proj-card:not(.highlight)').length
+        : 8;
+      document.getElementById('statApps').textContent = appCount + '+';
+      document.getElementById('heroApps').textContent = appCount + '+';
+      document.getElementById('expApps').textContent = appCount + '+';
+    })();
+
     /* Theme */
     const html = document.documentElement;
     html.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
@@ -1883,10 +2090,12 @@
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNote(); });
 
-    /* Back to top */
+    /* Back to top + scroll hint */
     const backTop = document.getElementById('backTop');
+    const scrollHint = document.getElementById('scrollHint');
     window.addEventListener('scroll', () => {
       backTop.classList.toggle('visible', window.scrollY > 320);
+      scrollHint.classList.toggle('hidden', window.scrollY > 80);
     }, { passive: true });
     backTop.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
   </script>
