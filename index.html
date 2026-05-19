@@ -1,563 +1,1779 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Võ Anh Trưởng — iOS Engineer</title>
   <style>
     :root {
-      --bg:        #f5f5f7;
-      --bg-card:   #ffffff;
-      --bg-nav:    rgba(245,245,247,0.82);
-      --text:      #1d1d1f;
-      --text-2:    #424245;
-      --text-3:    #6e6e73;
-      --accent:    #0071e3;
-      --accent-h:  #0077ed;
-      --border:    rgba(0,0,0,0.08);
-      --sh-sm:     0 1px 8px rgba(0,0,0,0.06);
-      --sh-md:     0 4px 24px rgba(0,0,0,0.10);
-      --sh-lg:     0 12px 48px rgba(0,0,0,0.14);
-      --tag-bg:    rgba(0,113,227,0.08);
-      --tag-txt:   #0071e3;
-      --r:         16px;
-      --nav-h:     52px;
+      --bg: #f5f5f7;
+      --bg-card: #ffffff;
+      --bg-nav: rgba(245, 245, 247, 0.82);
+      --text: #1d1d1f;
+      --text-2: #424245;
+      --text-3: #6e6e73;
+      --accent: #0071e3;
+      --accent-h: #0077ed;
+      --border: rgba(0, 0, 0, 0.08);
+      --sh-sm: 0 1px 8px rgba(0, 0, 0, 0.06);
+      --sh-md: 0 4px 24px rgba(0, 0, 0, 0.10);
+      --sh-lg: 0 12px 48px rgba(0, 0, 0, 0.14);
+      --tag-bg: rgba(0, 113, 227, 0.08);
+      --tag-txt: #0071e3;
+      --r: 16px;
+      --nav-h: 52px;
       --font: -apple-system, BlinkMacSystemFont, "SF Pro Display",
-              "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+        "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
     }
+
     [data-theme="dark"] {
-      --bg:       #000;
-      --bg-card:  #1c1c1e;
-      --bg-nav:   rgba(0,0,0,0.82);
-      --text:     #f5f5f7;
-      --text-2:   #c7c7cc;
-      --text-3:   #8e8e93;
-      --accent:   #2997ff;
+      --bg: #000;
+      --bg-card: #1c1c1e;
+      --bg-nav: rgba(0, 0, 0, 0.82);
+      --text: #f5f5f7;
+      --text-2: #c7c7cc;
+      --text-3: #8e8e93;
+      --accent: #2997ff;
       --accent-h: #42a5ff;
-      --border:   rgba(255,255,255,0.10);
-      --sh-sm:    0 1px 8px rgba(0,0,0,.40);
-      --sh-md:    0 4px 24px rgba(0,0,0,.50);
-      --sh-lg:    0 12px 48px rgba(0,0,0,.70);
-      --tag-bg:   rgba(41,151,255,0.14);
-      --tag-txt:  #2997ff;
+      --border: rgba(255, 255, 255, 0.10);
+      --sh-sm: 0 1px 8px rgba(0, 0, 0, .40);
+      --sh-md: 0 4px 24px rgba(0, 0, 0, .50);
+      --sh-lg: 0 12px 48px rgba(0, 0, 0, .70);
+      --tag-bg: rgba(41, 151, 255, 0.14);
+      --tag-txt: #2997ff;
     }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{font-family:var(--font);background:var(--bg);color:var(--text);
-      -webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      transition: background .3s, color .3s
+    }
 
     /* NAV */
-    nav{position:fixed;inset:0 0 auto 0;z-index:200;height:var(--nav-h);
-      background:var(--bg-nav);backdrop-filter:saturate(180%) blur(20px);
-      -webkit-backdrop-filter:saturate(180%) blur(20px);
-      border-bottom:1px solid var(--border);
-      display:flex;align-items:center;padding:0 24px;gap:0}
-    .nav-brand{font-size:17px;font-weight:600;letter-spacing:-.3px;
-      color:var(--text);text-decoration:none;margin-right:auto}
-    .nav-links{display:flex;list-style:none;gap:2px}
-    .nav-links a{display:block;padding:6px 10px;font-size:13px;
-      color:var(--text-2);text-decoration:none;border-radius:8px;
-      transition:color .15s,background .15s}
-    .nav-links a:hover,.nav-links a.active{color:var(--accent)}
-    .theme-btn{margin-left:8px;background:none;border:none;cursor:pointer;
-      width:34px;height:34px;border-radius:50%;display:flex;
-      align-items:center;justify-content:center;color:var(--text-3);
-      transition:background .15s,color .15s}
-    .theme-btn:hover{background:var(--border);color:var(--text)}
-    .icon-sun{display:none}
-    [data-theme="dark"] .icon-moon{display:none}
-    [data-theme="dark"] .icon-sun{display:block}
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 200;
+      height: var(--nav-h);
+      background: var(--bg-nav);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 0
+    }
+
+    .nav-brand {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -.3px;
+      color: var(--text);
+      text-decoration: none;
+      flex: 1
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2px;
+      margin: 0 auto
+    }
+
+    .nav-links a {
+      display: block;
+      padding: 6px 10px;
+      font-size: 13px;
+      color: var(--text-2);
+      text-decoration: none;
+      border-radius: 8px;
+      transition: color .15s, background .15s
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent)
+    }
+
+    .nav-right {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 4px
+    }
+
+    .theme-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-3);
+      transition: background .15s, color .15s
+    }
+
+    .theme-btn:hover {
+      background: var(--border);
+      color: var(--text)
+    }
+
+    .icon-sun {
+      display: none
+    }
+
+    [data-theme="dark"] .icon-moon {
+      display: none
+    }
+
+    [data-theme="dark"] .icon-sun {
+      display: block
+    }
+
+    .nav-hamburger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      color: var(--text-3);
+      transition: background .15s
+    }
+
+    .nav-hamburger:hover {
+      background: var(--border)
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 18px;
+      height: 1.5px;
+      background: currentColor;
+      border-radius: 2px;
+      transition: transform .25s, opacity .25s
+    }
+
+    .nav-hamburger.open span:nth-child(1) {
+      transform: translateY(6.5px) rotate(45deg)
+    }
+
+    .nav-hamburger.open span:nth-child(2) {
+      opacity: 0
+    }
+
+    .nav-hamburger.open span:nth-child(3) {
+      transform: translateY(-6.5px) rotate(-45deg)
+    }
+
+    /* Mobile nav dropdown */
+    .nav-mobile-menu {
+      display: none;
+      position: fixed;
+      top: var(--nav-h);
+      left: 0;
+      right: 0;
+      background: var(--bg-nav);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--border);
+      flex-direction: column;
+      padding: 8px 16px 16px;
+      z-index: 199;
+      gap: 2px
+    }
+
+    .nav-mobile-menu.open {
+      display: flex
+    }
+
+    .nav-mobile-menu a {
+      display: block;
+      padding: 10px 12px;
+      font-size: 15px;
+      color: var(--text-2);
+      text-decoration: none;
+      border-radius: 10px;
+      transition: color .15s, background .15s;
+      text-align: center
+    }
+
+    .nav-mobile-menu a:hover,
+    .nav-mobile-menu a.active {
+      color: var(--accent);
+      background: var(--tag-bg)
+    }
 
     /* LAYOUT */
-    .wrap{max-width:960px;margin:0 auto;padding:0 24px}
-    section{padding:60px 0}
-    section+section{border-top:1px solid var(--border)}
-    .alt-bg{background:var(--bg-card);margin:0 -9999px;padding-left:9999px;padding-right:9999px}
+    .wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px
+    }
 
-    .s-label{font-size:11px;font-weight:600;letter-spacing:1.4px;
-      text-transform:uppercase;color:var(--accent);margin-bottom:8px}
-    .s-title{font-size:clamp(26px,4vw,38px);font-weight:700;
-      letter-spacing:-.5px;line-height:1.14;color:var(--text);margin-bottom:36px}
+    section {
+      padding: 60px 0
+    }
+
+    section+section {
+      border-top: 1px solid var(--border)
+    }
+
+    .alt-bg {
+      background: var(--bg-card);
+      margin: 0 -9999px;
+      padding-left: 9999px;
+      padding-right: 9999px
+    }
+
+    .s-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px
+    }
+
+    .s-title {
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 700;
+      letter-spacing: -.5px;
+      line-height: 1.14;
+      color: var(--text);
+      margin-bottom: 36px
+    }
 
     /* HERO */
-    #hero{min-height:100svh;display:flex;flex-direction:column;
-      justify-content:center;padding-top:var(--nav-h)}
-    .hero-badge{display:inline-flex;align-items:center;gap:7px;
-      background:var(--tag-bg);color:var(--tag-txt);font-size:12px;
-      font-weight:500;padding:5px 13px;border-radius:999px;margin-bottom:22px}
-    .hero-badge span{width:6px;height:6px;border-radius:50%;
-      background:currentColor;animation:pulse 2s infinite}
-    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
-    .hero-h1{font-size:clamp(44px,8vw,88px);font-weight:700;
-      letter-spacing:-2.5px;line-height:1.04;color:var(--text);margin-bottom:18px}
-    .hero-h1 .ac{color:var(--accent)}
-    .hero-sub{font-size:clamp(15px,2vw,18px);font-weight:300;color:var(--text-3);
-      line-height:1.7;max-width:520px;margin-bottom:34px}
-    .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
-    .btn-p{background:var(--accent);color:#fff;padding:12px 22px;
-      border-radius:980px;font-size:15px;font-weight:500;text-decoration:none;
-      transition:background .15s,transform .12s}
-    .btn-p:hover{background:var(--accent-h);transform:scale(1.02)}
-    .btn-g{color:var(--accent);border:1.5px solid var(--border);padding:11px 22px;
-      border-radius:980px;font-size:15px;font-weight:500;text-decoration:none;
-      transition:border-color .15s,transform .12s}
-    .btn-g:hover{border-color:var(--accent);transform:scale(1.02)}
+    #hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: var(--nav-h)
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--tag-bg);
+      color: var(--tag-txt);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 13px;
+      border-radius: 999px;
+      margin-bottom: 22px
+    }
+
+    .hero-badge span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse 2s infinite
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: .4;
+        transform: scale(.75)
+      }
+    }
+
+    .hero-h1 {
+      font-size: clamp(44px, 8vw, 88px);
+      font-weight: 700;
+      letter-spacing: -2.5px;
+      line-height: 1.04;
+      color: var(--text);
+      margin-bottom: 18px
+    }
+
+    .hero-h1 .ac {
+      color: var(--accent)
+    }
+
+    .hero-sub {
+      font-size: clamp(15px, 2vw, 18px);
+      font-weight: 300;
+      color: var(--text-3);
+      line-height: 1.7;
+      max-width: 520px;
+      margin-bottom: 34px
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap
+    }
+
+    .btn-p {
+      background: var(--accent);
+      color: #fff;
+      padding: 12px 22px;
+      border-radius: 980px;
+      font-size: 15px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background .15s, transform .12s
+    }
+
+    .btn-p:hover {
+      background: var(--accent-h);
+      transform: scale(1.02)
+    }
+
+    .btn-g {
+      color: var(--accent);
+      border: 1.5px solid var(--border);
+      padding: 11px 22px;
+      border-radius: 980px;
+      font-size: 15px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: border-color .15s, transform .12s
+    }
+
+    .btn-g:hover {
+      border-color: var(--accent);
+      transform: scale(1.02)
+    }
 
     /* ABOUT */
-    .about-grid{display:grid;grid-template-columns:3fr 2fr;gap:40px;align-items:start}
-    .about-text p{font-size:16px;color:var(--text-2);line-height:1.78;
-      margin-bottom:14px}
-    .about-text p:last-child{margin-bottom:0}
-    .about-text strong{color:var(--text);font-weight:600}
-    .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .stat-card{background:var(--bg-card);border:1px solid var(--border);
-      border-radius:var(--r);padding:20px;box-shadow:var(--sh-sm);
-      transition:box-shadow .25s,transform .25s}
-    .stat-card:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
-    .stat-n{font-size:30px;font-weight:700;letter-spacing:-1px;
-      color:var(--accent);line-height:1;margin-bottom:5px}
-    .stat-l{font-size:12px;color:var(--text-3)}
+    .about-grid {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 40px;
+      align-items: start
+    }
+
+    .about-text p {
+      font-size: 16px;
+      color: var(--text-2);
+      line-height: 1.78;
+      margin-bottom: 14px
+    }
+
+    .about-text p:last-child {
+      margin-bottom: 0
+    }
+
+    .about-text strong {
+      color: var(--text);
+      font-weight: 600
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 20px;
+      box-shadow: var(--sh-sm);
+      transition: box-shadow .25s, transform .25s
+    }
+
+    .stat-card:hover {
+      box-shadow: var(--sh-md);
+      transform: translateY(-2px)
+    }
+
+    .stat-n {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 5px
+    }
+
+    .stat-l {
+      font-size: 12px;
+      color: var(--text-3)
+    }
 
     /* SKILLS */
-    .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-    .sg{background:var(--bg);border:1px solid var(--border);
-      border-radius:var(--r);padding:18px;
-      transition:box-shadow .25s,transform .25s}
-    .sg:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
-    .sg-t{font-size:11px;font-weight:600;letter-spacing:1px;
-      text-transform:uppercase;color:var(--text-3);margin-bottom:10px}
-    .tags{display:flex;flex-wrap:wrap;gap:6px}
-    .tag{background:var(--tag-bg);color:var(--tag-txt);font-size:12px;
-      font-weight:500;padding:3px 9px;border-radius:999px}
-    .tag.n{background:var(--border);color:var(--text-2)}
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px
+    }
+
+    .sg {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 18px;
+      transition: box-shadow .25s, transform .25s
+    }
+
+    .sg:hover {
+      box-shadow: var(--sh-md);
+      transform: translateY(-2px)
+    }
+
+    .sg-t {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 10px
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px
+    }
+
+    .tag {
+      background: var(--tag-bg);
+      color: var(--tag-txt);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 3px 9px;
+      border-radius: 999px
+    }
+
+    .tag.n {
+      background: var(--border);
+      color: var(--text-2)
+    }
 
     /* EXPERIENCE */
-    .timeline{position:relative;padding-left:20px}
-    .timeline::before{content:'';position:absolute;left:0;top:10px;bottom:0;
-      width:1px;background:var(--border)}
-    .tl-item{position:relative;margin-bottom:16px}
-    .tl-item:last-child{margin-bottom:0}
-    .tl-dot{position:absolute;left:-24px;top:22px;width:8px;height:8px;
-      border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
-    .exp-card{background:var(--bg-card);border:1px solid var(--border);
-      border-radius:var(--r);padding:24px;box-shadow:var(--sh-sm);
-      transition:box-shadow .25s,transform .25s}
-    .exp-card:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
-    .exp-head{display:flex;justify-content:space-between;align-items:flex-start;
-      flex-wrap:wrap;gap:8px;margin-bottom:4px}
-    .exp-role{font-size:16px;font-weight:600;color:var(--text)}
-    .exp-pill{font-size:11px;color:var(--text-3);font-weight:500;
-      background:var(--border);padding:3px 10px;border-radius:999px;white-space:nowrap}
-    .exp-co{font-size:13px;color:var(--accent);font-weight:500;margin-bottom:12px}
-    .exp-body{font-size:14px;color:var(--text-2);line-height:1.72}
-    .exp-body ul{padding-left:16px;margin-top:10px}
-    .exp-body li{margin-bottom:6px}
-    .exp-body strong{color:var(--text);font-weight:600}
+    .timeline {
+      position: relative;
+      padding-left: 20px
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10px;
+      bottom: 0;
+      width: 1px;
+      background: var(--border)
+    }
+
+    .tl-item {
+      position: relative;
+      margin-bottom: 16px
+    }
+
+    .tl-item:last-child {
+      margin-bottom: 0
+    }
+
+    .tl-dot {
+      position: absolute;
+      left: -24px;
+      top: 22px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg)
+    }
+
+    .exp-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 24px;
+      box-shadow: var(--sh-sm);
+      transition: box-shadow .25s, transform .25s
+    }
+
+    .exp-card:hover {
+      box-shadow: var(--sh-md);
+      transform: translateY(-2px)
+    }
+
+    .exp-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 4px
+    }
+
+    .exp-role {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text)
+    }
+
+    .exp-pill {
+      font-size: 11px;
+      color: var(--text-3);
+      font-weight: 500;
+      background: var(--border);
+      padding: 3px 10px;
+      border-radius: 999px;
+      white-space: nowrap
+    }
+
+    .exp-co {
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 12px
+    }
+
+    .exp-body {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.72
+    }
+
+    .exp-body ul {
+      padding-left: 16px;
+      margin-top: 10px
+    }
+
+    .exp-body li {
+      margin-bottom: 6px
+    }
+
+    .exp-body strong {
+      color: var(--text);
+      font-weight: 600
+    }
 
     /* PROJECTS */
-    .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-    .proj-card{background:var(--bg);border:1px solid var(--border);
-      border-radius:var(--r);padding:18px;position:relative;overflow:hidden;
-      box-shadow:var(--sh-sm);transition:box-shadow .25s,transform .25s}
-    .proj-card::after{content:'';position:absolute;inset:0 0 auto 0;height:2px;
-      background:linear-gradient(90deg,var(--accent),transparent)}
-    .proj-card:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
-    .proj-card.highlight{border-color:var(--accent);background:var(--tag-bg)}
-    .proj-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px}
-    .proj-period{font-size:11px;color:var(--text-3);margin-bottom:8px}
-    .proj-desc{font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:8px}
+    .proj-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px
+    }
+
+    .proj-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--sh-sm);
+      transition: box-shadow .25s, transform .25s
+    }
+
+    .proj-card::after {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent)
+    }
+
+    .proj-card:hover {
+      box-shadow: var(--sh-md);
+      transform: translateY(-2px)
+    }
+
+    .proj-card.active {
+      border-color: #30d158;
+      background: rgba(48, 209, 88, 0.06)
+    }
+
+    .proj-card.active::after {
+      background: linear-gradient(90deg, #30d158, transparent)
+    }
+
+    .proj-card.active .proj-name {
+      color: #30d158
+    }
+
+    .active-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      color: #30d158;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      margin-bottom: 6px
+    }
+
+    .active-badge span {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #30d158;
+      animation: pulse 2s infinite
+    }
+
+    .proj-card.highlight {
+      border-color: var(--accent);
+      background: var(--tag-bg)
+    }
+
+    .proj-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 3px
+    }
+
+    .proj-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0
+    }
+
+    .proj-period {
+      font-size: 11px;
+      color: var(--text-3);
+      margin-bottom: 8px
+    }
+
+    .proj-desc {
+      font-size: 12px;
+      color: var(--text-2);
+      line-height: 1.6;
+      margin-bottom: 8px
+    }
 
     /* NOTES */
-    .notes-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-    .note-card{background:var(--bg-card);border:1px solid var(--border);
-      border-radius:var(--r);padding:22px;cursor:pointer;box-shadow:var(--sh-sm);
-      transition:box-shadow .25s,transform .25s}
-    .note-card:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
-    .note-chip{font-size:11px;font-weight:600;letter-spacing:.8px;
-      text-transform:uppercase;color:var(--accent);margin-bottom:8px}
-    .note-title{font-size:17px;font-weight:700;letter-spacing:-.2px;
-      color:var(--text);line-height:1.3;margin-bottom:8px}
-    .note-desc{font-size:13px;color:var(--text-3);line-height:1.6}
-    .note-arrow{margin-top:14px;font-size:13px;color:var(--accent);
-      display:flex;align-items:center;gap:4px;font-weight:500}
-    .note-dim{opacity:.4;pointer-events:none}
+    .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px
+    }
+
+    .note-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 22px;
+      cursor: pointer;
+      box-shadow: var(--sh-sm);
+      transition: box-shadow .25s, transform .25s
+    }
+
+    .note-card:hover {
+      box-shadow: var(--sh-md);
+      transform: translateY(-2px)
+    }
+
+    .note-chip {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px
+    }
+
+    .note-title {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -.2px;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 8px
+    }
+
+    .note-desc {
+      font-size: 13px;
+      color: var(--text-3);
+      line-height: 1.6
+    }
+
+    .note-arrow {
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 500
+    }
+
+    .note-dim {
+      opacity: .4;
+      pointer-events: none
+    }
 
     /* MODAL */
-    .modal-overlay{display:none;position:fixed;inset:0;z-index:300;
-      background:rgba(0,0,0,.5);backdrop-filter:blur(8px);
-      -webkit-backdrop-filter:blur(8px);
-      align-items:flex-end;justify-content:center}
-    .modal-overlay.open{display:flex}
-    .modal-sheet{background:var(--bg-card);width:100%;max-width:800px;
-      max-height:90svh;border-radius:20px 20px 0 0;overflow:hidden;
-      display:flex;flex-direction:column;box-shadow:var(--sh-lg);
-      animation:slideUp .28s cubic-bezier(.32,1.1,.68,1)}
-    @keyframes slideUp{from{transform:translateY(60px);opacity:0}to{transform:translateY(0);opacity:1}}
-    .modal-header{display:flex;align-items:center;justify-content:space-between;
-      padding:14px 20px;border-bottom:1px solid var(--border);flex-shrink:0}
-    .modal-title{font-size:15px;font-weight:600;color:var(--text)}
-    .modal-close{background:var(--border);border:none;cursor:pointer;
-      width:28px;height:28px;border-radius:50%;display:flex;
-      align-items:center;justify-content:center;color:var(--text-2);
-      font-size:15px;line-height:1;transition:background .15s}
-    .modal-close:hover{background:var(--accent);color:#fff}
-    .modal-body{overflow-y:auto;padding:24px 24px 40px;
-      -webkit-overflow-scrolling:touch}
-    .nc h1{font-size:22px;font-weight:700;margin-bottom:6px;color:var(--text)}
-    .nc h2{font-size:17px;font-weight:700;margin:24px 0 9px;color:var(--text);
-      border-bottom:1px solid var(--border);padding-bottom:6px}
-    .nc h3{font-size:14px;font-weight:600;margin:18px 0 7px;color:var(--text)}
-    .nc p{font-size:14px;color:var(--text-2);line-height:1.75;margin-bottom:10px}
-    .nc ul,.nc ol{padding-left:18px;margin-bottom:12px}
-    .nc li{font-size:14px;color:var(--text-2);line-height:1.7;margin-bottom:4px}
-    .nc strong{color:var(--text);font-weight:600}
-    .nc code{background:var(--border);padding:1px 6px;border-radius:5px;
-      font-size:12px;font-family:'SF Mono',Menlo,monospace}
-    .nc pre{background:var(--bg);border:1px solid var(--border);
-      border-radius:12px;padding:16px;overflow-x:auto;margin-bottom:14px}
-    .nc pre code{background:none;padding:0;font-size:12px;line-height:1.65}
-    .nc blockquote{border-left:3px solid var(--accent);padding-left:14px;
-      margin:10px 0;color:var(--text-3);font-size:14px;line-height:1.65}
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(0, 0, 0, .5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      align-items: flex-end;
+      justify-content: center
+    }
+
+    .modal-overlay.open {
+      display: flex
+    }
+
+    .modal-sheet {
+      background: var(--bg-card);
+      width: 100%;
+      max-width: 800px;
+      max-height: 90svh;
+      border-radius: 20px 20px 0 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--sh-lg);
+      animation: slideUp .28s cubic-bezier(.32, 1.1, .68, 1)
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(60px);
+        opacity: 0
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0
+    }
+
+    .modal-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text)
+    }
+
+    .modal-close {
+      background: var(--border);
+      border: none;
+      cursor: pointer;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-2);
+      font-size: 15px;
+      line-height: 1;
+      transition: background .15s
+    }
+
+    .modal-close:hover {
+      background: var(--accent);
+      color: #fff
+    }
+
+    .modal-body {
+      overflow-y: auto;
+      padding: 24px 24px 40px;
+      -webkit-overflow-scrolling: touch
+    }
+
+    .nc h1 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text)
+    }
+
+    .nc h2 {
+      font-size: 17px;
+      font-weight: 700;
+      margin: 24px 0 9px;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px
+    }
+
+    .nc h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 18px 0 7px;
+      color: var(--text)
+    }
+
+    .nc p {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.75;
+      margin-bottom: 10px
+    }
+
+    .nc ul,
+    .nc ol {
+      padding-left: 18px;
+      margin-bottom: 12px
+    }
+
+    .nc li {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.7;
+      margin-bottom: 4px
+    }
+
+    .nc strong {
+      color: var(--text);
+      font-weight: 600
+    }
+
+    .nc code {
+      background: var(--border);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-family: 'SF Mono', Menlo, monospace
+    }
+
+    .nc pre {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      overflow-x: auto;
+      margin-bottom: 14px
+    }
+
+    .nc pre code {
+      background: none;
+      padding: 0;
+      font-size: 12px;
+      line-height: 1.65
+    }
+
+    .nc blockquote {
+      border-left: 3px solid var(--accent);
+      padding-left: 14px;
+      margin: 10px 0;
+      color: var(--text-3);
+      font-size: 14px;
+      line-height: 1.65
+    }
 
     /* EDUCATION */
-    .edu-card{background:var(--bg);border:1px solid var(--border);
-      border-radius:var(--r);padding:22px;display:flex;gap:16px;
-      align-items:flex-start;box-shadow:var(--sh-sm);text-decoration:none;
-      transition:box-shadow .25s,transform .25s}
-    .edu-card:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
-    .edu-logo{width:52px;height:52px;border-radius:12px;flex-shrink:0;
-      background:#fff;border:1px solid var(--border);
-      display:flex;align-items:center;justify-content:center;overflow:hidden}
-    .edu-logo img{width:44px;height:44px;object-fit:contain}
-    .edu-fallback{width:52px;height:52px;border-radius:12px;flex-shrink:0;
-      background:linear-gradient(135deg,#005bac,#0071e3);
-      display:flex;align-items:center;justify-content:center;
-      color:#fff;font-size:16px;font-weight:700;letter-spacing:-.5px}
-    .edu-school{font-size:16px;font-weight:600;color:var(--text);margin-bottom:4px}
-    .edu-deg{font-size:14px;color:var(--text-2);margin-bottom:3px}
-    .edu-yr{font-size:13px;color:var(--text-3)}
+    .edu-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 22px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      box-shadow: var(--sh-sm);
+      text-decoration: none;
+      transition: box-shadow .25s, transform .25s
+    }
+
+    .edu-card:hover {
+      box-shadow: var(--sh-md);
+      transform: translateY(-2px)
+    }
+
+    .edu-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      background: #fff;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden
+    }
+
+    .edu-logo img {
+      width: 44px;
+      height: 44px;
+      object-fit: contain
+    }
+
+    .edu-fallback {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, #005bac, #0071e3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -.5px
+    }
+
+    .edu-school {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px
+    }
+
+    .edu-deg {
+      font-size: 14px;
+      color: var(--text-2);
+      margin-bottom: 3px
+    }
+
+    .edu-yr {
+      font-size: 13px;
+      color: var(--text-3)
+    }
 
     /* CONTACT */
-    #contact{text-align:center}
-    .contact-h{font-size:clamp(30px,5vw,50px);font-weight:700;
-      letter-spacing:-.8px;line-height:1.12;color:var(--text);margin-bottom:12px}
-    .contact-h .ac{color:var(--accent)}
-    .contact-sub{font-size:16px;color:var(--text-3);font-weight:300;
-      margin-bottom:32px;line-height:1.6}
-    .c-links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-    .c-link{display:inline-flex;align-items:center;gap:7px;
-      padding:10px 18px;border-radius:980px;font-size:14px;font-weight:500;
-      text-decoration:none;border:1.5px solid var(--border);color:var(--text-2);
-      transition:border-color .15s,color .15s,transform .12s}
-    .c-link:hover{border-color:var(--accent);color:var(--accent);transform:scale(1.02)}
-    .c-link svg{width:15px;height:15px;flex-shrink:0}
+    #contact {
+      text-align: center
+    }
 
-    footer{padding:24px;border-top:1px solid var(--border);text-align:center;
-      font-size:12px;color:var(--text-3)}
-    footer a{color:var(--accent);text-decoration:none}
+    .contact-h {
+      font-size: clamp(30px, 5vw, 50px);
+      font-weight: 700;
+      letter-spacing: -.8px;
+      line-height: 1.12;
+      color: var(--text);
+      margin-bottom: 12px
+    }
+
+    .contact-h .ac {
+      color: var(--accent)
+    }
+
+    .contact-sub {
+      font-size: 16px;
+      color: var(--text-3);
+      font-weight: 300;
+      margin-bottom: 32px;
+      line-height: 1.6
+    }
+
+    .c-links {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap
+    }
+
+    .c-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 18px;
+      border-radius: 980px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1.5px solid var(--border);
+      color: var(--text-2);
+      transition: border-color .15s, color .15s, transform .12s
+    }
+
+    .c-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: scale(1.02)
+    }
+
+    .c-link svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0
+    }
+
+    footer {
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-3)
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none
+    }
 
     /* REVEAL */
-    .reveal{opacity:0;transform:translateY(18px);
-      transition:opacity .5s ease,transform .5s ease}
-    .reveal.in{opacity:1;transform:none}
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .5s ease, transform .5s ease
+    }
+
+    .reveal.in {
+      opacity: 1;
+      transform: none
+    }
+
+    /* BACK TO TOP */
+    .back-top {
+      position: fixed;
+      bottom: 28px;
+      right: 24px;
+      z-index: 190;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(0, 113, 227, .35);
+      opacity: 0;
+      transform: translateY(12px) scale(.85);
+      pointer-events: none;
+      transition: opacity .25s, transform .25s, background .15s
+    }
+
+    .back-top.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto
+    }
+
+    .back-top:hover {
+      background: var(--accent-h)
+    }
+
+    .back-top svg {
+      width: 16px;
+      height: 16px
+    }
+
+    /* APP STORE LINK */
+    .proj-store {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 0;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      opacity: .85;
+      transition: opacity .15s
+    }
+
+    .proj-store:hover {
+      opacity: 1
+    }
+
+    .proj-store svg {
+      width: 13px;
+      height: 13px;
+      flex-shrink: 0
+    }
 
     /* RESPONSIVE */
-    @media(max-width:768px){
-      section{padding:44px 0}
-      .nav-links{display:none}
-      .about-grid{grid-template-columns:1fr;gap:24px}
-      .skills-grid{grid-template-columns:1fr 1fr}
-      .proj-grid{grid-template-columns:1fr 1fr}
-      .notes-grid{grid-template-columns:1fr}
-      .modal-sheet{max-height:92svh}
+    @media(max-width:768px) {
+      section {
+        padding: 44px 0
+      }
+
+      .nav-links {
+        display: none !important
+      }
+
+      .nav-hamburger {
+        display: flex
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 24px
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .proj-grid {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .notes-grid {
+        grid-template-columns: 1fr
+      }
+
+      .modal-sheet {
+        max-height: 92svh
+      }
+
+      .wrap {
+        padding: 0 16px
+      }
     }
-    @media(max-width:500px){
-      section{padding:36px 0}
-      .skills-grid{grid-template-columns:1fr}
-      .proj-grid{grid-template-columns:1fr}
-      .stats-grid{grid-template-columns:1fr 1fr}
+
+    @media(max-width:500px) {
+      section {
+        padding: 36px 0
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr
+      }
+
+      .proj-grid {
+        grid-template-columns: 1fr
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .hero-h1 {
+        letter-spacing: -1.5px
+      }
     }
   </style>
 </head>
+
 <body>
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-brand">Võ Anh Trưởng</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#notes">Notes</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5" />
+          <line x1="12" y1="1" x2="12" y2="3" />
+          <line x1="12" y1="21" x2="12" y2="23" />
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+          <line x1="1" y1="12" x2="3" y2="12" />
+          <line x1="21" y1="12" x2="23" y2="12" />
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+  <!-- MOBILE NAV MENU -->
+  <div class="nav-mobile-menu" id="mobileMenu">
+    <a href="#about" onclick="closeMobileMenu()">About</a>
+    <a href="#skills" onclick="closeMobileMenu()">Skills</a>
+    <a href="#experience" onclick="closeMobileMenu()">Experience</a>
+    <a href="#projects" onclick="closeMobileMenu()">Projects</a>
+    <a href="#notes" onclick="closeMobileMenu()">Notes</a>
+    <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+  </div>
 
-<!-- NAV -->
-<nav>
-  <a href="#hero" class="nav-brand">Võ Anh Trưởng</a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#notes">Notes</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <button class="theme-btn" id="themeToggle" aria-label="Đổi theme">
-    <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    <svg class="icon-sun"  width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  <div class="wrap">
+
+    <!-- HERO -->
+    <section id="hero">
+      <div class="hero-badge"><span></span>Open to opportunities</div>
+      <h1 class="hero-h1">Võ Anh<br><span class="ac">Trưởng.</span></h1>
+      <p class="hero-sub">Senior iOS Engineer · Fintech Solutions · Audio Processing R&amp;D<br>
+        Building mobile banking ecosystems for 8+ financial institutions across Vietnam &amp; Southeast Asia.</p>
+      <div class="hero-cta">
+        <a href="#experience" class="btn-p">View Experience</a>
+        <a href="#contact" class="btn-g">Contact</a>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <p class="s-label">About</p>
+      <h2 class="s-title">Crafting mobile experiences<br>that millions rely on.</h2>
+      <div class="about-grid reveal">
+        <div class="about-text">
+          <p>I'm a <strong>Senior iOS Engineer</strong> with 4+ years of deep expertise in <strong>Fintech
+              mobile</strong>. I spearhead the end-to-end development, maintenance, and delivery of mobile banking
+            ecosystems for the most reputable financial institutions in Vietnam.</p>
+          <p>From Retail Banking, Corporate/SME Banking to Digital Neobanks — I handle everything from core banking
+            modules serving millions of active users to rapid neobank integrations within 1–2 months.</p>
+          <p>I believe great software lives at the intersection of <strong>precision engineering</strong> and
+            <strong>deep UX</strong> — and I bring both to every product I build.
+          </p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-n">4+</div>
+            <div class="stat-l">Years of Experience</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-n">8+</div>
+            <div class="stat-l">Banking Apps</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /wrap — break for alt-bg -->
+
+  <!-- SKILLS (alt bg) -->
+  <div class="alt-bg">
+    <div class="wrap">
+      <section id="skills">
+        <p class="s-label">Technical Skills</p>
+        <h2 class="s-title">Languages, tools &amp; platforms.</h2>
+        <div class="skills-grid reveal">
+          <div class="sg">
+            <p class="sg-t">Languages</p>
+            <div class="tags"><span class="tag">Swift</span><span class="tag">Objective-C</span><span
+                class="tag">Dart</span></div>
+          </div>
+          <div class="sg">
+            <p class="sg-t">Frameworks</p>
+            <div class="tags"><span class="tag">Native iOS</span><span class="tag">UIKit</span><span
+                class="tag">SwiftUI</span><span class="tag">Flutter</span></div>
+          </div>
+          <div class="sg">
+            <p class="sg-t">Dev Tools</p>
+            <div class="tags"><span class="tag n">Xcode</span><span class="tag n">Android Studio</span><span
+                class="tag n">Git</span><span class="tag n">SourceTree</span><span class="tag n">JIRA</span></div>
+          </div>
+          <div class="sg">
+            <p class="sg-t">Design Tools</p>
+            <div class="tags"><span class="tag n">Figma</span><span class="tag n">Sketch</span><span class="tag n">Adobe
+                XD</span><span class="tag n">Postman</span></div>
+          </div>
+          <div class="sg">
+            <p class="sg-t">Architecture</p>
+            <div class="tags"><span class="tag n">OOP</span><span class="tag n">MVC</span><span
+                class="tag n">MVVM</span><span class="tag n">Design Patterns</span><span class="tag n">Algorithms</span>
+            </div>
+          </div>
+          <div class="sg">
+            <p class="sg-t">Specialties</p>
+            <div class="tags"><span class="tag">Fintech</span><span class="tag">Audio Processing</span><span
+                class="tag">NLP</span><span class="tag">e-KYC</span></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <p class="s-label">Experience</p>
+      <h2 class="s-title">Where I've worked.</h2>
+      <div class="timeline reveal">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="exp-card">
+            <div class="exp-head"><span class="exp-role">Senior iOS Engineer</span><span class="exp-pill">Aug 2023 —
+                Present</span></div>
+            <div class="exp-co">VNPAY · Ho Chi Minh City · On-site</div>
+            <div class="exp-body">
+              <p>Spearheaded the end-to-end development, maintenance, and delivery of mobile banking ecosystems for
+                <strong>8+ financial institutions</strong>. My portfolio spans across Retail Banking, Corporate/SME
+                Banking, and Digital Neobanks.
+              </p>
+              <ul>
+                <li><strong>Enterprise &amp; Retail Banking</strong> (Big 4 Bank, HDBank, SAIGONBANK, VIETABANK) —
+                  Implemented and maintained core banking modules (Transfers, Savings, Bill Pay) serving millions of
+                  active users with strict security compliance. Continuously refactored legacy codebases to improve app
+                  performance and stability.</li>
+                <li><strong>Corporate &amp; SME Banking</strong> (Vietbank SME) — Implemented B2B-specific features
+                  including Maker/Checker approval flows, Bulk Transfers, and Payroll services. Enhanced authentication
+                  layers for high-value corporate transactions.</li>
+                <li><strong>Digital Banking &amp; Neobanks</strong> (Vikki Bank, TIN Card – VietCredit) — Fast-track
+                  integration of e-KYC, Virtual Cards, and Credit Scoring within aggressive 1–2 month timelines. Built
+                  dynamic, mobile-first interfaces focusing on user acquisition and engagement.</li>
+                <li><strong>R&amp;D · Vietnamese Currency TTS Engine</strong> — Researched and deployed a custom audio
+                  processing algorithm (2-month initiative). Converts currency values into natural Vietnamese speech,
+                  enhancing accessibility and automating transaction notifications.</li>
+                <li><strong>Regional Market</strong> (Sacombank Cambodia) — Delivered localized solutions handling
+                  multi-currency logic and international banking standards.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="exp-card">
+            <div class="exp-head"><span class="exp-role">iOS Developer</span><span class="exp-pill">Mar 2021 — Aug
+                2023</span></div>
+            <div class="exp-co">FPT Software · Full-time</div>
+            <div class="exp-body">
+              <p>Developed and maintained iOS applications within a cross-functional team environment, focusing on
+                performance, code quality, and user experience.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- PROJECTS (alt bg) -->
+  <div class="alt-bg">
+    <div class="wrap">
+      <section id="projects">
+        <p class="s-label">Projects</p>
+        <h2 class="s-title">Products I've shipped.</h2>
+        <div class="proj-grid reveal">
+          <!-- ACTIVE (most recent start first) -->
+          <div class="proj-card active">
+            <div class="active-badge"><span></span>Active</div>
+            <div class="proj-name">SAIGONBANK iBanking</div>
+            <div class="proj-period">Oct 2025 — Present · VNPAY</div>
+            <div class="proj-desc">Building SAIGONBANK SME Banking: Maker/Checker approval flows, transaction management
+              (pending/processed/detail/copy/filter), regulatory compliance (Early Prevention, Circular No. 77¹, T+1).
+            </div>
+            <div class="tags"><span class="tag">iOS</span><span class="tag">Finance</span><span
+                class="tag n">Swift</span><span class="tag n">SME Banking</span></div>
+            <a class="proj-store" href="https://apps.apple.com/vn/app/saigonbank-ibanking/id6754838910" target="_blank"
+              rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.16 1.26-2.14 3.76.03 2.99 2.63 3.99 2.66 4l-.07.26zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+              </svg>
+              App Store
+            </a>
+          </div>
+          <div class="proj-card active">
+            <div class="active-badge"><span></span>Active</div>
+            <div class="proj-name">Vietbank Digital Plus</div>
+            <div class="proj-period">May 2025 — Present · VNPAY</div>
+            <div class="proj-desc">Leading development of Vietbank Omni — a ground-up rebuild. Core modules: biometric
+              auth, Soft OTP, Facepay Plus, account management, domestic/international/batch transfers, QR payment,
+              e-KYC (NFC, biometric collection), savings, personal finance management, and SDK integrations (taxi,
+              Vietlott, Voice OTT). Compliance: Decree No. 13¹, Circular No. 50¹, VNGUARD.</div>
+            <div class="tags"><span class="tag">iOS</span><span class="tag">Finance</span><span
+                class="tag n">Swift</span><span class="tag n">e-KYC</span><span class="tag n">Soft OTP</span></div>
+            <a class="proj-store" href="https://apps.apple.com/vn/app/vietbank-digital-plus/id6746633957"
+              target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.16 1.26-2.14 3.76.03 2.99 2.63 3.99 2.66 4l-.07.26zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+              </svg>
+              App Store
+            </a>
+          </div>
+          <div class="proj-card active">
+            <div class="active-badge"><span></span>Active</div>
+            <div class="proj-name">Vietbank Digital</div>
+            <div class="proj-period">Aug 2023 — Present · VNPAY</div>
+            <div class="proj-desc">Maintained and enhanced Vietbank Digital: SDK integrations (bus/hotel/train),
+              lucky-wheel campaigns, security hardening, e-KYC upgrades (Oval, NFC C06, biometric collection, Facepay
+              for Decision No. 2345¹), card payment, OTT registration flow, webchat, email settings, and QA across
+              versions
+              3.3.2–3.4.1.</div>
+            <div class="tags"><span class="tag">iOS</span><span class="tag">Objective-C</span><span
+                class="tag n">e-KYC</span><span class="tag n">Soft OTP</span></div>
+            <a class="proj-store" href="https://apps.apple.com/vn/app/vietbank-digital/id1469883896" target="_blank"
+              rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.16 1.26-2.14 3.76.03 2.99 2.63 3.99 2.66 4l-.07.26zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+              </svg>
+              App Store
+            </a>
+          </div>
+          <!-- COMPLETED (most recent start first, A-Z tiebreak) -->
+          <div class="proj-card">
+            <div class="proj-card-head">
+              <div class="proj-name">VIETABANK</div>
+              <a class="proj-store" href="https://apps.apple.com/vn/app/vietabank/id6744814738" target="_blank"
+                rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.16 1.26-2.14 3.76.03 2.99 2.63 3.99 2.66 4l-.07.26zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                </svg>
+                App Store
+              </a>
+            </div>
+            <div class="proj-period">Apr 2025 — Jul 2025 · VNPAY</div>
+            <div class="proj-desc">Contributed to VietABank Omni app: Soft OTP, OTT push notifications, personal profile
+              (avatar, background, biometric settings), home chart, default account management, and UI/UX polish.</div>
+            <div class="tags"><span class="tag">iOS</span><span class="tag">Finance</span><span
+                class="tag n">Swift</span></div>
+          </div>
+          <div class="proj-card">
+            <div class="proj-card-head">
+              <div class="proj-name">BIDV SmartBanking</div>
+              <a class="proj-store" href="https://apps.apple.com/vn/app/bidv-smartbanking/id1061867449" target="_blank"
+                rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.16 1.26-2.14 3.76.03 2.99 2.63 3.99 2.66 4l-.07.26zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                </svg>
+                App Store
+              </a>
+            </div>
+            <div class="proj-period">Feb 2025 — Apr 2025 · VNPAY</div>
+            <div class="proj-desc">Developed tax filing forms, international bill payment (FX query, list, cancel, rate
+              update), home customization (favorites &amp; one-tap utility widgets), and related bug fixes.</div>
+            <div class="tags"><span class="tag">iOS</span><span class="tag">Finance</span><span
+                class="tag n">Swift</span></div>
+          </div>
+          <div class="proj-card">
+            <div class="proj-card-head">
+              <div class="proj-name">HDBank</div>
+              <a class="proj-store" href="https://apps.apple.com/vn/app/hdbank/id1461658565" target="_blank"
+                rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.16 1.26-2.14 3.76.03 2.99 2.63 3.99 2.66 4l-.07.26zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                </svg>
+                App Store
+              </a>
+            </div>
+            <div class="proj-period">Oct 2024 — Mar 2025 · VNPAY</div>
+            <div class="proj-desc">Maintained and extended the HDBank iOS app: SkyPoint loyalty system (CR, OTT
+              notifications, bug fixes), SDK updates (Film/Bus/Hotel), Transaction Dispute module, Happy Friday
+              web-game, Circular No. 50¹ Soft PIN across CGF/Loan/ShareCard SDKs, Apple Wallet fixes, and golive
+              support.</div>
+            <div class="tags"><span class="tag">iOS</span><span class="tag">Finance</span><span
+                class="tag n">Objective-C</span><span class="tag n">Retail Banking</span></div>
+          </div>
+          <div class="proj-card">
+            <div class="proj-card-head">
+              <div class="proj-name">Sacombank Cambodia mBanking</div>
+              <a class="proj-store" href="https://apps.apple.com/vn/app/sacombank-cambodia-mbanking/id1447998826"
+                target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.16 1.26-2.14 3.76.03 2.99 2.63 3.99 2.66 4l-.07.26zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                </svg>
+                App Store
+              </a>
+            </div>
+            <div class="proj-period">Aug 2024 — Oct 2024 · VNPAY</div>
+            <div class="proj-desc">Implemented QR code generation with transaction amount and conducted QA for v6.1 of
+              the multi-currency banking app.</div>
+            <div class="tags"><span class="tag">iOS</span><span class="tag">Objective-C</span><span
+                class="tag n">Multi-currency</span></div>
+          </div>
+          <div class="proj-card">
+            <div class="proj-card-head">
+              <div class="proj-name">Vikki DAB</div>
+              <a class="proj-store" href="https://apps.apple.com/vn/app/vikki-dab/id6692612252" target="_blank"
+                rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.16 1.26-2.14 3.76.03 2.99 2.63 3.99 2.66 4l-.07.26zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                </svg>
+                App Store
+              </a>
+            </div>
+            <div class="proj-period">Aug 2024 — Oct 2024 · VNPAY</div>
+            <div class="proj-desc">Fast-track neobank integration: e-KYC, Virtual Cards, and Credit Scoring modules
+              delivered within a 2-month timeline, with a focus on mobile-first UX and user acquisition flows.</div>
+            <div class="tags"><span class="tag">iOS</span><span class="tag n">Swift</span><span
+                class="tag n">Neobank</span><span class="tag n">e-KYC</span></div>
+          </div>
+          <div class="proj-card">
+            <div class="proj-name">TIN Card (VietCredit)</div>
+            <div class="proj-period">Sep 2023 — Aug 2024 · VNPAY</div>
+            <div class="proj-desc">Full-stack development for the VietCredit TIN Card app: SDK marketplace integrations
+              (movie/bus/hotel/flight/train/taxi/delivery/golf), Soft OTP, QR payments (types 1–4), e-KYC upgrades, card
+              services UI, security hardening (screenshot &amp; clipboard blocking), and end-to-end QA across versions
+              1.0.3–1.1.6.</div>
+            <div class="tags"><span class="tag">iOS</span><span class="tag">Objective-C</span><span
+                class="tag n">Virtual Card</span><span class="tag n">e-KYC</span><span class="tag n">Soft OTP</span>
+            </div>
+          </div>
+          <!-- TTS (last) -->
+          <div class="proj-card highlight">
+            <div class="proj-name" style="color:var(--accent)">🎙 Vietnamese Currency TTS</div>
+            <div class="proj-period">Jan 2025 — Feb 2025 · VNPAY · R&amp;D</div>
+            <div class="proj-desc">Built a Number-to-Speech module to automate audio notifications for financial
+              transactions. Solved the challenge of natural phrasing in Vietnamese currency by implementing an optimized
+              audio concatenation logic. Designed for integration into banking apps and accessibility tools.</div>
+            <div class="tags"><span class="tag">Audio Processing</span><span class="tag">NLP</span><span
+                class="tag n">Swift</span></div>
+          </div>
+        </div>
+
+        <p class="proj-desc" style="margin-top:12px;font-size:11px;color:var(--text-3);font-style:italic">
+          ¹ Regulations issued by the State Bank of Vietnam (SBV): Circular No. 50/2024/TT-NHNN on information security
+          in banking; Circular No. 77/2024/TT-NHNN on banking transactions; Decision No. 2345/QD-NHNN on multi-factor
+          authentication for payment transactions; Decree No. 13/2023/ND-CP on personal data protection.
+        </p>
+
+        <p class="s-label" style="margin-top:32px;margin-bottom:16px">FPT Software · 2021 — 2023</p>
+        <div class="proj-grid reveal">
+          <!-- Most recent start first -->
+          <div class="proj-card">
+            <div class="proj-name">M*****</div>
+            <div class="proj-period">Dec 2022 — Aug 2023 · FPT Software</div>
+            <div class="proj-desc">iOS &amp; iPadOS app for browsing multilingual content including discount coupons and
+              free newspapers in multiple native languages.</div>
+            <div class="tags"><span class="tag">iOS</span><span class="tag">iPadOS</span><span
+                class="tag n">Swift</span><span class="tag n">Objective-C</span><span class="tag n">AVFoundation</span>
+            </div>
+          </div>
+          <div class="proj-card">
+            <div class="proj-name">A*****</div>
+            <div class="proj-period">Jul 2022 — Dec 2022 · FPT Software</div>
+            <div class="proj-desc">iOS &amp; iPadOS app for Bluetooth device communication — send commands, process
+              returned data, upload to cloud, and bridge to web app.</div>
+            <div class="tags"><span class="tag">iOS</span><span class="tag">iPadOS</span><span
+                class="tag n">Swift</span><span class="tag n">CoreBluetooth</span><span class="tag n">MSAL</span></div>
+          </div>
+          <div class="proj-card">
+            <div class="proj-name">F*****</div>
+            <div class="proj-period">Sep 2021 — Jul 2022 · FPT Software</div>
+            <div class="proj-desc">Maintained and developed features for an iOS sales-data app — strategy
+              creation/update and statistics tracking.</div>
+            <div class="tags"><span class="tag">iOS</span><span class="tag n">Swift</span><span
+                class="tag n">Firebase</span></div>
+          </div>
+          <div class="proj-card">
+            <div class="proj-name">T*****</div>
+            <div class="proj-period">Jul 2021 — Aug 2021 · FPT Software</div>
+            <div class="proj-desc">iOS app for managing power-outage information — download/upload outage data, register
+              for notifications, view request history.</div>
+            <div class="tags"><span class="tag">iOS</span><span class="tag n">Swift</span><span
+                class="tag n">VIPER</span><span class="tag n">XCTest</span></div>
+          </div>
+          <div class="proj-card">
+            <div class="proj-name">The Coffee House Clone</div>
+            <div class="proj-period">Mar 2021 — May 2021 · FPT Software</div>
+            <div class="proj-desc">iOS app for ordering drinks/food, browsing store locations, reading newsfeed, and
+              logging in to a membership account.</div>
+            <div class="tags"><span class="tag">iOS</span><span class="tag n">Swift</span><span
+                class="tag n">Firebase</span><span class="tag n">Google Maps</span></div>
+          </div>
+        </div>
+
+        <p class="s-label" style="margin-top:32px;margin-bottom:16px">Personal &amp; Academic · 2020 — 2021</p>
+        <div class="proj-grid reveal">
+          <div class="proj-card">
+            <div class="proj-name">Y2U</div>
+            <div class="proj-period">Oct 2020 — Jul 2021 · University Graduation Project</div>
+            <div class="proj-desc">Cross-platform Flutter app built as a graduation capstone at UTC2. Features: student
+              activity registration, university newsfeed, and admin attendance tracking via on-device facial recognition
+              (MobileFaceNet + TensorFlow Lite) and QR scanning.</div>
+            <div class="tags"><span class="tag">Flutter</span><span class="tag n">Firebase</span><span
+                class="tag n">TensorFlow Lite</span><span class="tag n">MobileFaceNet</span><span class="tag n">ML
+                Kit</span></div>
+          </div>
+        </div>
+
+        <p class="proj-desc" style="margin-top:14px;font-size:11px;color:var(--text-3);font-style:italic">
+          * Project names marked with asterisks are censored per FPT Software's security policy.
+        </p>
+      </section>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- NOTES -->
+    <section id="notes">
+      <p class="s-label">Notes &amp; Writing</p>
+      <h2 class="s-title">Things I've written about.</h2>
+      <div class="notes-grid reveal">
+        <div class="note-card" onclick="openNote('embedded')" role="button" tabindex="0"
+          onkeydown="if(event.key==='Enter')openNote('embedded')">
+          <p class="note-chip">Embedded Systems · IC Design</p>
+          <h3 class="note-title">Lộ trình: Từ Lập trình Nhúng đến Kỹ sư Thiết kế Vi mạch</h3>
+          <p class="note-desc">7 stages from Bare-metal, ARM Cortex-M, Embedded Linux to Verilog, FPGA and UVM. Includes
+            keywords, books, tools and career map.</p>
+          <div class="note-arrow">Read article <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></div>
+        </div>
+        <div class="note-card note-dim" aria-hidden="true">
+          <p class="note-chip">Coming soon</p>
+          <h3 class="note-title">More articles on the way...</h3>
+          <p class="note-desc">iOS architecture, Fintech security best practices, Audio processing deep-dives.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education">
+      <p class="s-label">Education</p>
+      <h2 class="s-title">Education.</h2>
+      <div class="reveal">
+        <a href="https://www.utc.edu.vn" target="_blank" rel="noopener" class="edu-card">
+          <div class="edu-logo">
+            <img src="https://www.utc.edu.vn/images/logo-utc.png" alt="UTC"
+              onerror="this.closest('.edu-logo').outerHTML='<div class=\'edu-fallback\'>UTC</div>'" />
+          </div>
+          <div>
+            <div class="edu-school">University of Transport and Communications (UTC)</div>
+            <div class="edu-deg">Engineer · Information Technology</div>
+            <div class="edu-yr">Aug 2017 — Nov 2021 · Hanoi, Vietnam</div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <h2 class="contact-h">Let's build<br><span class="ac">something great together.</span></h2>
+      <p class="contact-sub">Open to exciting projects, collaborations,<br>and new opportunities in Fintech &amp; iOS.
+      </p>
+      <div class="c-links">
+        <a href="https://github.com/truongva1111" class="c-link" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.37.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23A11.5 11.5 0 0 1 12 6.8c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z" />
+          </svg>
+          GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/voanhtruong" class="c-link" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.8 0 0 .77 0 1.72v20.56C0 23.23.8 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.23 0 22.23 0z" />
+          </svg>
+          LinkedIn
+        </a>
+        <a href="mailto:voanhtruong.utc@gmail.com" class="c-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+            <polyline points="22,6 12,13 2,6" />
+          </svg>
+          Email
+        </a>
+      </div>
+    </section>
+
+  </div><!-- /wrap -->
+
+  <footer>© 2026 Võ Anh Trưởng · <a href="https://truongva1111.github.io">truongva1111.github.io</a></footer>
+
+  <!-- BACK TO TOP -->
+  <button class="back-top" id="backTop" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+      stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15" />
+    </svg>
   </button>
-</nav>
 
-<div class="wrap">
-
-<!-- HERO -->
-<section id="hero">
-  <div class="hero-badge"><span></span>Open to opportunities</div>
-  <h1 class="hero-h1">Võ Anh<br><span class="ac">Trưởng.</span></h1>
-  <p class="hero-sub">Senior iOS Engineer · Fintech Expert · Audio Processing R&D<br>
-  Xây dựng hệ sinh thái mobile banking cho 8+ tổ chức tài chính tại Việt Nam &amp; Đông Nam Á.</p>
-  <div class="hero-cta">
-    <a href="#experience" class="btn-p">Xem kinh nghiệm</a>
-    <a href="#contact" class="btn-g">Liên hệ</a>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about">
-  <p class="s-label">About</p>
-  <h2 class="s-title">Crafting mobile experiences<br>that millions rely on.</h2>
-  <div class="about-grid reveal">
-    <div class="about-text">
-      <p>Mình là <strong>Senior iOS Engineer</strong> với 4+ năm kinh nghiệm chuyên sâu trong lĩnh vực <strong>Fintech mobile</strong>. Mình xây dựng và duy trì các hệ sinh thái ngân hàng số cho những tổ chức tài chính uy tín nhất Việt Nam.</p>
-      <p>Từ Retail Banking, Corporate/SME Banking đến Digital Neobanks — mình đảm nhiệm từ các module nghiệp vụ cốt lõi phục vụ hàng triệu người dùng đến tích hợp nhanh cho neobank trong 1–2 tháng.</p>
-      <p>Mình tin rằng phần mềm xuất sắc nằm ở giao điểm giữa <strong>kỹ thuật chính xác</strong> và <strong>UX có chiều sâu</strong> — và mình mang cả hai vào mọi sản phẩm mình xây.</p>
-    </div>
-    <div class="stats-grid">
-      <div class="stat-card"><div class="stat-n">4+</div><div class="stat-l">Năm kinh nghiệm</div></div>
-      <div class="stat-card"><div class="stat-n">8+</div><div class="stat-l">Banking apps</div></div>
-      <div class="stat-card"><div class="stat-n">2M+</div><div class="stat-l">Active users</div></div>
-      <div class="stat-card"><div class="stat-n">3</div><div class="stat-l">Quốc gia</div></div>
-    </div>
-  </div>
-</section>
-
-</div><!-- /wrap — break for alt-bg -->
-
-<!-- SKILLS (alt bg) -->
-<div class="alt-bg">
-<div class="wrap">
-<section id="skills">
-  <p class="s-label">Technical Skills</p>
-  <h2 class="s-title">Ngôn ngữ, công cụ &amp; nền tảng.</h2>
-  <div class="skills-grid reveal">
-    <div class="sg"><p class="sg-t">Languages</p><div class="tags"><span class="tag">Swift</span><span class="tag">Objective-C</span><span class="tag">Dart</span></div></div>
-    <div class="sg"><p class="sg-t">Frameworks</p><div class="tags"><span class="tag">Native iOS</span><span class="tag">UIKit</span><span class="tag">SwiftUI</span><span class="tag">Flutter</span></div></div>
-    <div class="sg"><p class="sg-t">Dev Tools</p><div class="tags"><span class="tag n">Xcode</span><span class="tag n">Android Studio</span><span class="tag n">Git</span><span class="tag n">SourceTree</span><span class="tag n">JIRA</span></div></div>
-    <div class="sg"><p class="sg-t">Design Tools</p><div class="tags"><span class="tag n">Figma</span><span class="tag n">Sketch</span><span class="tag n">Adobe XD</span><span class="tag n">Postman</span></div></div>
-    <div class="sg"><p class="sg-t">Architecture</p><div class="tags"><span class="tag n">OOP</span><span class="tag n">MVC</span><span class="tag n">MVVM</span><span class="tag n">Design Patterns</span><span class="tag n">Algorithms</span></div></div>
-    <div class="sg"><p class="sg-t">Specialties</p><div class="tags"><span class="tag">Fintech</span><span class="tag">Audio Processing</span><span class="tag">NLP</span><span class="tag">e-KYC</span></div></div>
-  </div>
-</section>
-</div>
-</div>
-
-<div class="wrap">
-
-<!-- EXPERIENCE -->
-<section id="experience">
-  <p class="s-label">Experience</p>
-  <h2 class="s-title">Nơi mình đã làm việc.</h2>
-  <div class="timeline reveal">
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="exp-card">
-        <div class="exp-head"><span class="exp-role">Senior iOS Engineer</span><span class="exp-pill">Aug 2023 — Nay</span></div>
-        <div class="exp-co">VNPAY · Ho Chi Minh City · On-site</div>
-        <div class="exp-body">
-          <p>Chủ trì phát triển, duy trì và bàn giao hệ sinh thái mobile banking cho <strong>8+ tổ chức tài chính</strong> trên các phân khúc Retail, Corporate/SME và Digital Neobank.</p>
-          <ul>
-            <li><strong>Enterprise &amp; Retail Banking</strong> — Các module cốt lõi (Chuyển tiền, Tiết kiệm, Thanh toán hóa đơn) cho Big 4, HDBank, SAIGONBANK, VietABank phục vụ hàng triệu người dùng với bảo mật nghiêm ngặt.</li>
-            <li><strong>Corporate &amp; SME Banking</strong> — Luồng Maker/Checker, Chuyển tiền theo lô (Bulk Transfer), dịch vụ Payroll cho Vietbank SME.</li>
-            <li><strong>Digital Neobanks</strong> — Tích hợp nhanh e-KYC, Thẻ ảo, Chấm điểm tín dụng cho Vikki Bank và TIN Card trong 1–2 tháng.</li>
-            <li><strong>R&amp;D · Vietnamese Currency TTS Engine</strong> — Nghiên cứu và triển khai thuật toán nối âm tùy chỉnh chuyển số tiền thành tiếng Việt tự nhiên, tăng khả năng tiếp cận và tự động hóa thông báo giao dịch.</li>
-            <li><strong>Regional Market</strong> — Giải pháp đa tiền tệ cho Sacombank Cambodia.</li>
-          </ul>
-        </div>
+  <!-- NOTE MODAL -->
+  <div class="modal-overlay" id="noteModal" onclick="if(event.target===this)closeNote()">
+    <div class="modal-sheet" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <span class="modal-title" id="modalTitle"></span>
+        <button class="modal-close" onclick="closeNote()" aria-label="Close">✕</button>
       </div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="exp-card">
-        <div class="exp-head"><span class="exp-role">iOS Developer</span><span class="exp-pill">Mar 2021 — Aug 2023</span></div>
-        <div class="exp-co">FPT Software · Full-time</div>
-        <div class="exp-body">
-          <p>Phát triển và duy trì ứng dụng iOS trong môi trường đội nhóm đa chức năng, tập trung vào hiệu năng, chất lượng code và trải nghiệm người dùng.</p>
-        </div>
+      <div class="modal-body">
+        <div class="nc" id="modalContent"></div>
       </div>
     </div>
   </div>
-</section>
 
-</div>
+  <script>
+    /* Theme */
+    const html = document.documentElement;
+    html.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+    document.getElementById('themeToggle').onclick = () => {
+      const n = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', n); localStorage.setItem('theme', n);
+    };
 
-<!-- PROJECTS (alt bg) -->
-<div class="alt-bg">
-<div class="wrap">
-<section id="projects">
-  <p class="s-label">Projects</p>
-  <h2 class="s-title">Sản phẩm mình đã ship.</h2>
-  <div class="proj-grid reveal">
-    <div class="proj-card highlight">
-      <div class="proj-name" style="color:var(--accent)">🎙 Vietnamese Currency TTS</div>
-      <div class="proj-period">R&amp;D Initiative · VNPAY · 2 tháng</div>
-      <div class="proj-desc">Thuật toán nối âm tùy chỉnh, chuyển đổi số tiền thành tiếng Việt tự nhiên. Tích hợp vào banking apps &amp; accessibility tools.</div>
-      <div class="tags"><span class="tag">Audio Processing</span><span class="tag">NLP</span><span class="tag n">Swift</span></div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-name">SAIGONBANK</div>
-      <div class="proj-period">Oct 2025 — Nay · VNPAY</div>
-      <div class="tags"><span class="tag">iOS</span><span class="tag">Finance</span></div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-name">Vietbank Digital Plus</div>
-      <div class="proj-period">May 2025 — Nay · VNPAY</div>
-      <div class="tags"><span class="tag">iOS</span><span class="tag">Finance</span></div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-name">VietABank</div>
-      <div class="proj-period">Apr 2025 — Jul 2025 · VNPAY</div>
-      <div class="tags"><span class="tag">iOS</span><span class="tag">Finance</span></div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-name">BIDV</div>
-      <div class="proj-period">Feb 2025 — Apr 2025 · VNPAY</div>
-      <div class="tags"><span class="tag">iOS</span><span class="tag">Finance</span></div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-name">HDBank</div>
-      <div class="proj-period">VNPAY</div>
-      <div class="tags"><span class="tag">iOS</span><span class="tag">Finance</span><span class="tag n">Retail Banking</span></div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-name">Sacombank Cambodia</div>
-      <div class="proj-period">Aug 2024 — Oct 2024 · VNPAY</div>
-      <div class="tags"><span class="tag">iOS</span><span class="tag">Objective-C</span><span class="tag n">Multi-currency</span></div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-name">Vikki Bank</div>
-      <div class="proj-period">Aug 2024 — Oct 2024 · VNPAY</div>
-      <div class="tags"><span class="tag">iOS</span><span class="tag n">Neobank</span></div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-name">TIN Card (VietCredit)</div>
-      <div class="proj-period">Sep 2023 — Aug 2024 · VNPAY</div>
-      <div class="tags"><span class="tag">iOS</span><span class="tag n">Virtual Card</span></div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-name">Vietbank Digital</div>
-      <div class="proj-period">Aug 2023 — Nay · VNPAY</div>
-      <div class="tags"><span class="tag">iOS</span><span class="tag">Objective-C</span></div>
-    </div>
-  </div>
-</section>
-</div>
-</div>
+    /* Hamburger menu */
+    const hamburger = document.getElementById('navHamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    function closeMobileMenu() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+    hamburger.onclick = () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      hamburger.classList.toggle('open', isOpen);
+    };
+    document.addEventListener('click', e => {
+      if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) closeMobileMenu();
+    });
 
-<div class="wrap">
+    /* Scroll reveal */
+    const io = new IntersectionObserver(es => {
+      es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.07, rootMargin: '0px 0px -24px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-<!-- NOTES -->
-<section id="notes">
-  <p class="s-label">Notes &amp; Writing</p>
-  <h2 class="s-title">Những gì mình đã ghi chép.</h2>
-  <div class="notes-grid reveal">
-    <div class="note-card" onclick="openNote('embedded')" role="button" tabindex="0"
-         onkeydown="if(event.key==='Enter')openNote('embedded')">
-      <p class="note-chip">Embedded Systems · IC Design</p>
-      <h3 class="note-title">Lộ trình: Từ Lập trình Nhúng đến Kỹ sư Thiết kế Vi mạch</h3>
-      <p class="note-desc">7 giai đoạn từ Bare-metal, ARM Cortex-M, Linux nhúng đến Verilog, FPGA và UVM. Kèm từ khóa, sách, tools và bản đồ nghề nghiệp.</p>
-      <div class="note-arrow">Đọc bài <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-    </div>
-    <div class="note-card note-dim" aria-hidden="true">
-      <p class="note-chip">Coming soon</p>
-      <h3 class="note-title">Thêm bài viết đang trên đường...</h3>
-      <p class="note-desc">iOS architecture, Fintech security best practices, Audio processing deep-dives.</p>
-    </div>
-  </div>
-</section>
+    /* Active nav */
+    const secs = document.querySelectorAll('section[id]');
+    const nas = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let cur = '';
+      secs.forEach(s => { if (window.scrollY >= s.offsetTop - 70) cur = s.id; });
+      nas.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+    }, { passive: true });
 
-<!-- EDUCATION -->
-<section id="education">
-  <p class="s-label">Education</p>
-  <h2 class="s-title">Học vấn.</h2>
-  <div class="reveal">
-    <a href="https://www.utc.edu.vn" target="_blank" rel="noopener" class="edu-card">
-      <div class="edu-logo">
-        <img src="https://www.utc.edu.vn/images/logo-utc.png" alt="UTC"
-          onerror="this.closest('.edu-logo').outerHTML='<div class=\'edu-fallback\'>UTC</div>'" />
-      </div>
-      <div>
-        <div class="edu-school">Trường Đại học Giao thông Vận tải (UTC)</div>
-        <div class="edu-deg">Kỹ sư · Công nghệ Thông tin</div>
-        <div class="edu-yr">Aug 2017 — Nov 2021 · Hà Nội, Việt Nam</div>
-      </div>
-    </a>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-  <h2 class="contact-h">Cùng nhau xây<br><span class="ac">điều gì đó tuyệt vời.</span></h2>
-  <p class="contact-sub">Mở cửa cho các dự án thú vị, hợp tác<br>và cơ hội mới trong Fintech &amp; iOS.</p>
-  <div class="c-links">
-    <a href="https://github.com/truongva1111" class="c-link" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.37.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23A11.5 11.5 0 0 1 12 6.8c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
-      GitHub
-    </a>
-    <a href="https://www.linkedin.com/in/v%C3%B5-anh-tr%C6%B0%E1%BB%9Fng-85a2a5201/" class="c-link" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.8 0 0 .77 0 1.72v20.56C0 23.23.8 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.23 0 22.23 0z"/></svg>
-      LinkedIn
-    </a>
-    <a href="mailto:voanhtruong@email.com" class="c-link">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-      Email
-    </a>
-  </div>
-</section>
-
-</div><!-- /wrap -->
-
-<footer>© 2025 Võ Anh Trưởng · <a href="https://truongva1111.github.io">truongva1111.github.io</a></footer>
-
-<!-- NOTE MODAL -->
-<div class="modal-overlay" id="noteModal" onclick="if(event.target===this)closeNote()">
-  <div class="modal-sheet" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal-header">
-      <span class="modal-title" id="modalTitle"></span>
-      <button class="modal-close" onclick="closeNote()" aria-label="Đóng">✕</button>
-    </div>
-    <div class="modal-body"><div class="nc" id="modalContent"></div></div>
-  </div>
-</div>
-
-<script>
-/* Theme */
-const html=document.documentElement;
-html.setAttribute('data-theme',localStorage.getItem('theme')||'light');
-document.getElementById('themeToggle').onclick=()=>{
-  const n=html.getAttribute('data-theme')==='dark'?'light':'dark';
-  html.setAttribute('data-theme',n);localStorage.setItem('theme',n);
-};
-
-/* Scroll reveal */
-const io=new IntersectionObserver(es=>{
-  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
-},{threshold:0.07,rootMargin:'0px 0px -24px 0px'});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-
-/* Active nav */
-const secs=document.querySelectorAll('section[id]');
-const nas=document.querySelectorAll('.nav-links a');
-window.addEventListener('scroll',()=>{
-  let cur='';
-  secs.forEach(s=>{if(window.scrollY>=s.offsetTop-70)cur=s.id;});
-  nas.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
-},{passive:true});
-
-/* Notes modal */
-const notes={
-embedded:{
-title:'Lộ trình: Từ Lập trình Nhúng đến Kỹ sư Thiết kế Vi mạch',
-html:`<h1>🔬 Lộ trình tự học: Từ Lập trình Nhúng đến Kỹ sư Thiết kế Vi mạch</h1>
+    /* Notes modal */
+    const notes = {
+      embedded: {
+        title: 'Lộ trình: Từ Lập trình Nhúng đến Kỹ sư Thiết kế Vi mạch',
+        html: `<h1>🔬 Lộ trình tự học: Từ Lập trình Nhúng đến Kỹ sư Thiết kế Vi mạch</h1>
 <blockquote>Dành cho kỹ sư phần mềm / sinh viên CNTT muốn chuyển sang Embedded Systems &amp; IC Design.<br>Thời gian ước tính: 18–36 tháng (học 2–3 giờ/ngày).</blockquote>
 
 <h2>Giai đoạn 1 — Lập trình Bare-metal</h2>
@@ -651,20 +1867,29 @@ html:`<h1>🔬 Lộ trình tự học: Từ Lập trình Nhúng đến Kỹ sư 
 <li>📺 FastBit Embedded Brain Academy · Low Level Learning · Miro Samek (YouTube)</li>
 <li>🌐 Wokwi.com · EDA Playground · OpenLane · Google MPW</li>
 </ul>`
-}};
+      }
+    };
 
-function openNote(id){
-  const n=notes[id];if(!n)return;
-  document.getElementById('modalTitle').textContent=n.title;
-  document.getElementById('modalContent').innerHTML=n.html;
-  document.getElementById('noteModal').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeNote(){
-  document.getElementById('noteModal').classList.remove('open');
-  document.body.style.overflow='';
-}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeNote();});
-</script>
+    function openNote(id) {
+      const n = notes[id]; if (!n) return;
+      document.getElementById('modalTitle').textContent = n.title;
+      document.getElementById('modalContent').innerHTML = n.html;
+      document.getElementById('noteModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeNote() {
+      document.getElementById('noteModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNote(); });
+
+    /* Back to top */
+    const backTop = document.getElementById('backTop');
+    window.addEventListener('scroll', () => {
+      backTop.classList.toggle('visible', window.scrollY > 320);
+    }, { passive: true });
+    backTop.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  </script>
 </body>
+
 </html>
