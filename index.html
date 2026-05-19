@@ -1187,6 +1187,7 @@
       border: 1px solid var(--border);
       text-decoration: none;
       position: relative;
+      overflow: hidden;
       transition: background .15s, transform .15s, box-shadow .15s
     }
 
@@ -1199,7 +1200,8 @@
     .tool-logo img {
       width: 18px;
       height: 18px;
-      object-fit: contain
+      object-fit: contain;
+      transition: opacity .3s
     }
 
     [data-theme="dark"] .tool-logo img {
@@ -1217,6 +1219,7 @@
       text-decoration: none;
       flex-shrink: 0;
       position: relative;
+      overflow: hidden;
       transition: background .15s, transform .12s
     }
 
@@ -1227,7 +1230,55 @@
     .tag-logo img {
       width: 13px;
       height: 13px;
-      object-fit: contain
+      object-fit: contain;
+      transition: opacity .3s
+    }
+
+    /* SHIMMER LOADING */
+    @keyframes shimmer {
+      0% { background-position: -250% 0 }
+      100% { background-position: 250% 0 }
+    }
+
+    .tool-logo.loading,
+    .tag-logo.loading {
+      background: linear-gradient(
+        100deg,
+        var(--border) 30%,
+        rgba(128, 128, 128, .18) 50%,
+        var(--border) 70%
+      ) !important;
+      background-size: 300% 100% !important;
+      animation: shimmer 1.5s linear infinite !important
+    }
+
+    .logo-fallback {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 7px;
+      font-weight: 700;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+      color: var(--text-3);
+      text-align: center;
+      line-height: 1.2;
+      padding: 2px;
+      pointer-events: none;
+      z-index: 1
+    }
+
+    .tool-logo:not(.loading) .logo-fallback,
+    .tag-logo:not(.loading) .logo-fallback {
+      display: none
+    }
+
+    .tool-logo img,
+    .tag-logo img {
+      position: relative;
+      z-index: 2
     }
 
     /* INSTANT TOOLTIP */
@@ -2098,6 +2149,34 @@
       scrollHint.classList.toggle('hidden', window.scrollY > 80);
     }, { passive: true });
     backTop.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    /* Progressive logo loading */
+    document.querySelectorAll('.tool-logo img, .tag-logo img').forEach(img => {
+      const wrap = img.parentElement;
+      const name = wrap.getAttribute('data-tip') || img.getAttribute('alt') || '';
+      // Inject fallback text
+      const fb = document.createElement('span');
+      fb.className = 'logo-fallback';
+      fb.textContent = name;
+      wrap.appendChild(fb);
+      // Start loading state
+      wrap.classList.add('loading');
+      img.style.opacity = '0';
+      const onLoad = () => {
+        wrap.classList.remove('loading');
+        img.style.opacity = '1';
+      };
+      const onError = () => {
+        wrap.classList.remove('loading');
+        // fallback text stays visible permanently
+      };
+      if (img.complete) {
+        img.naturalWidth > 0 ? onLoad() : onError();
+      } else {
+        img.addEventListener('load', onLoad, { once: true });
+        img.addEventListener('error', onError, { once: true });
+      }
+    });
   </script>
 </body>
 
